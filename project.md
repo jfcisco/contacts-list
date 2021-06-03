@@ -10,7 +10,7 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
         - b. Last name*
         - c. Middle name*
         - d. Birthday* ( this should have a datepicker)
-        - e. Gender*
+        - e. Gender
         - f. Address* (Address line, City/Province, Country)
         - g. Email address*
         - h. Contact number* (should have the option to save at least 3 contact numbers, one should be marked as primary)
@@ -35,7 +35,8 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
     2. Validations should be applied.
 
 ## Assumptions/Questions
-1. Is gender and company name required? Assume yes
+1. Is gender and company name required? 
+    1. Assume no
 2. #5, assume each search bar is different?
 3. What if user has no javascript enabled?
     1. ` <noscript></noscript>` for no JavaScript.
