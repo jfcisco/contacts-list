@@ -1,4 +1,4 @@
-import { Contact } from "./ContactsList";
+import { Contact } from "./types/Contact";
 
 export const sampleContacts: Contact[] = [{
   id: 1,
@@ -27,6 +27,6 @@ export const sampleContacts: Contact[] = [{
     cityProvince: "Sample City",
     country: "Philippines"
   },
-  emailAddress: "john.doe@example.com",
-  contactNumbers: ["848 6670"]
+  emailAddress: "mary.sue1@example.com",
+  contactNumbers: ["987 6543", "445 6650"]
 }];
