@@ -1,10 +1,10 @@
 import { Contact, getPrimaryContactNumber, getAgeFromBirthday } from '../types/Contact';
 
-type ContactsListRow = {
+type ContactsListRowProps = {
   contact: Contact
 }
 
-function ContactsListRow({ contact }: ContactsListRow): JSX.Element {
+function ContactsListRow({ contact }: ContactsListRowProps): JSX.Element {
   const {
     firstName,
     lastName,
@@ -36,19 +36,21 @@ type ContactsListProps = {
 
 export default function ContactsList({ contacts }: ContactsListProps): JSX.Element {
   return (
-    <table className="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Age</th>
-          <th scope="col">City/Province</th>
-          <th scope="col">Email</th>
-          <th scope="col">Contact Number (Primary)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {contacts.map((c) => <ContactsListRow key={c.id} contact={c} />) }
-      </tbody>
-    </table>
+    <div className="table-responsive">
+      <table className="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">City/Province</th>
+            <th scope="col">Email</th>
+            <th scope="col">Contact Number (Primary)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {contacts.map((c) => <ContactsListRow key={c.id} contact={c} />)}
+        </tbody>
+      </table>
+    </div>
   );
 }
