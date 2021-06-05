@@ -19,6 +19,18 @@ const ContactView = ({ modalRef, contact }: ContactViewProps): JSX.Element => {
     if (modalRef.current) modalRef.current.hide();
   }
 
+  const {
+    firstName,
+    lastName,
+    middleName,
+    birthday,
+    gender,
+    address,
+    emailAddress,
+    contactNumbers,
+    companyName
+  } = contact;
+
   return (
     <div ref={modalDivRef} className="modal fade" id="view-contact">
       <div className="modal-dialog modal-fullscreen-md-down" tabIndex={-1}>
@@ -27,7 +39,16 @@ const ContactView = ({ modalRef, contact }: ContactViewProps): JSX.Element => {
             <button type="button" className="btn-close" onClick={() => closeModal()}></button>
           </div>
           <div className="modal-body">
-            <p>Hello, there!</p>
+            <h1>{`${lastName}, ${firstName} ${middleName}`}</h1>
+
+            <dl>
+              <dt>First Name:</dt>
+              <dd>{firstName}</dd>
+              <dt>Middle Name:</dt>
+              <dd>{middleName}</dd>
+              <dt>Last Name:</dt>
+              <dd>{lastName}</dd>
+            </dl>
           </div>
         </div>
       </div>
