@@ -1,9 +1,10 @@
-import { sampleContacts } from '../shared/sampleContacts';
+import { sampleContacts } from '../sampleContacts';
+import ContactsList from './ContactsList';
 
 export default function App(): JSX.Element {
   return (
-    <ul className="container">
-      { sampleContacts.map((contact) => <li><pre><code>{JSON.stringify(contact)}</code></pre></li>)}
-    </ul>
+    <div className="container">
+      <ContactsList contacts={sampleContacts} />
+    </div>
   );
 }
