@@ -43,8 +43,8 @@ export function getPrimaryContactNumber(contacts: string[]): string | undefined 
   return contacts[0];
 }
 
-/** Gets person's age as of the time of function call from their birthday
- * Assumes 31,556,952,000 milliseconds in a year
+/** Gets person's age as of the time of function call from their birthday.
+ * Assumes 31,556,952,000 milliseconds in a year.
 */
 export function getAgeFromBirthday(birthday: Date): Number {
   const ageInMs = Date.now() - birthday.getTime();
