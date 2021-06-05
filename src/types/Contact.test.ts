@@ -1,4 +1,4 @@
-import { getPrimaryContactNumber, setPrimaryContactNumber } from './ContactsList';
+import { getAgeFromBirthday, getPrimaryContactNumber, setPrimaryContactNumber } from './Contact';
 
 test('Can get primary contact number', () => {
   const contactNumbers = ["0", "1", "2"];
@@ -24,4 +24,11 @@ test('Can set primary contact number', () => {
 
 test('Error thrown when trying to set non-existing number as primary', () => {
   expect(() => setPrimaryContactNumber(["0", "1"], "2")).toThrowError("2 not in contacts");
+})
+
+test('Can get age from birthday', () => {
+  const myBirthday = new Date(1998, 7, 4);
+  const result = getAgeFromBirthday(myBirthday);
+
+  expect(result).toEqual(22);
 })
