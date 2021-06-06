@@ -1,12 +1,14 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Pages, PageContext } from '../contexts/PageContext';
 import { Contact, getPrimaryContactNumber, getAgeFromBirthday } from '../types/Contact';
+import ContactView from './ContactView';
 
 type ContactsListRowProps = {
-  contact: Contact
+  contact: Contact;
+  onClick: () => void;
 }
 
-function ContactsListRow({ contact }: ContactsListRowProps): JSX.Element {
+function ContactsListRow({ contact, onClick }: ContactsListRowProps): JSX.Element {
   const {
     firstName,
     lastName,
@@ -22,7 +24,7 @@ function ContactsListRow({ contact }: ContactsListRowProps): JSX.Element {
   const primaryContact = getPrimaryContactNumber(contactNumbers);
 
   return (
-    <tr role="button">
+    <tr role="button" onClick={onClick}>
       <td>{fullName}</td>
       <td>{age}</td>
       <td>{address.cityProvince}</td>
@@ -37,11 +39,19 @@ type ContactsListProps = {
 }
 
 export default function ContactsList({ contacts }: ContactsListProps): JSX.Element {
-  const {setCurrentPage} = useContext(PageContext);
+  const { setCurrentPage } = useContext(PageContext);
+  const [contactShown, setContactShown] = useState<Contact | null>(null);
   
   return (
     <>
-      <button onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
+      <div className="row mb-4">
+        <p className="col-9">Please click on a row to open it.</p>
+        <button className="col-3 btn btn-primary" onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
+      </div>
+      {/* Contact Modal */}
+      { contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)}/>}
+      
+      {/* Contact List */}
       <div className="table-responsive">
         <table className="table table-hover">
           <thead>
@@ -54,7 +64,7 @@ export default function ContactsList({ contacts }: ContactsListProps): JSX.Eleme
             </tr>
           </thead>
           <tbody>
-            {contacts.map((c) => <ContactsListRow key={c.id} contact={c} />)}
+            {contacts.map((c) => <ContactsListRow key={c.id} contact={c} onClick={() => setContactShown(c)}/>)}
           </tbody>
         </table>
       </div>

@@ -1,23 +1,38 @@
 import Modal from 'bootstrap/js/dist/modal';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Contact } from '../types/Contact';
+
+/** Format given date according to US english date */
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString("en-US", {
+    dateStyle: "medium"
+  });
+}
 
 type ContactViewProps = {
   contact: Contact;
-  modalRef: React.MutableRefObject<Modal | undefined>
+  onHide: () => void;
 }
 
-const ContactView = ({ modalRef, contact }: ContactViewProps): JSX.Element => {
-  // TODO: Possibly make the modal an HOC for reusability
+const ContactView = ({ contact, onHide }: ContactViewProps): JSX.Element => {
   const modalDivRef = React.useRef<HTMLDivElement>(null);
-  
+  const modal = useRef<Modal>();
+
   React.useEffect(() => {
-    modalRef.current = new Modal(modalDivRef.current as Element);
+    modal.current = new Modal(modalDivRef.current as Element);
+    modal.current?.show();
   }, []);
 
-  const closeModal = () => {
-    if (modalRef.current) modalRef.current.hide();
-  }
+  // Setup event handler
+  React.useEffect(() => {
+    const modalRef = modalDivRef.current;
+
+    modalRef?.addEventListener('hidden.bs.modal', onHide);
+
+    return function cleanup() {
+      modalRef?.removeEventListener('hidden.bs.modal', onHide);
+    }
+  }, [onHide]);
 
   const {
     firstName,
@@ -31,23 +46,18 @@ const ContactView = ({ modalRef, contact }: ContactViewProps): JSX.Element => {
     companyName
   } = contact;
 
-  /** Format given date according to US english date */
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
-      dateStyle: "medium"
-    });
-  }
-
   return (
     <div ref={modalDivRef} className="modal fade" id="view-contact">
       <div className="modal-dialog modal-fullscreen-md-down" tabIndex={-1}>
         <div className="modal-content">
           <div className="modal-header">
-            <button type="button" className="btn-close" onClick={() => closeModal()}></button>
+            <h2 className="modal-title">
+              Contact:&nbsp;
+              <small className="text-muted">{firstName}</small>
+            </h2>
+            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div className="modal-body">
-            <h1>Contact</h1>
-            <h2>{`${lastName}, ${firstName} ${middleName}`}</h2>
             {/* TODO: Grid styling for dl */}
             <dl>
               <dt>First Name</dt>
