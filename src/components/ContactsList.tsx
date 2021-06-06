@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { Pages, PageContext } from '../contexts/PageContext';
 import { Contact, getPrimaryContactNumber, getAgeFromBirthday } from '../types/Contact';
 
 type ContactsListRowProps = {
@@ -35,22 +37,27 @@ type ContactsListProps = {
 }
 
 export default function ContactsList({ contacts }: ContactsListProps): JSX.Element {
+  const {setCurrentPage} = useContext(PageContext);
+  
   return (
-    <div className="table-responsive">
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Age</th>
-            <th scope="col">City/Province</th>
-            <th scope="col">Email</th>
-            <th scope="col">Contact Number (Primary)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.map((c) => <ContactsListRow key={c.id} contact={c} />)}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <button onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
+      <div className="table-responsive">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Age</th>
+              <th scope="col">City/Province</th>
+              <th scope="col">Email</th>
+              <th scope="col">Contact Number (Primary)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map((c) => <ContactsListRow key={c.id} contact={c} />)}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }

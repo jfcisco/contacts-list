@@ -1,7 +1,11 @@
+import { useContext } from 'react';
+import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact } from '../types/Contact';
 
 /** Form to create a contact record */
 export default function ContactCreate() {
+  const pageContext = useContext(PageContext);
+
   return (
     <div>
       {/* TODO: Add styling especially required fields */}
@@ -48,6 +52,9 @@ export default function ContactCreate() {
 
         <input type="submit" />
       </form>
+      <button onClick={() => pageContext?.setCurrentPage(Pages.LIST)}>
+        Go Back
+      </button>
     </div>
   )
 }
