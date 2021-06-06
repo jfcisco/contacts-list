@@ -4,7 +4,7 @@ import { Contact } from '../types/Contact';
 
 /** Form to create a contact record */
 export default function ContactCreate() {
-  const pageContext = useContext(PageContext);
+  const { setCurrentPage } = useContext(PageContext);
 
   return (
     <div>
@@ -52,7 +52,7 @@ export default function ContactCreate() {
 
         <input type="submit" />
       </form>
-      <button onClick={() => pageContext?.setCurrentPage(Pages.LIST)}>
+      <button onClick={() => setCurrentPage(Pages.LIST)}>
         Go Back
       </button>
     </div>
