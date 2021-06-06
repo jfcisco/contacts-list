@@ -45,8 +45,8 @@ export default function ContactsList({ contacts }: ContactsListProps): JSX.Eleme
   return (
     <>
       <div className="row mb-4">
-        <p className="col-9">Please click on a row to open it.</p>
-        <button className="col-3 btn btn-primary" onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
+        <p className="col-sm-9">Please click on a row to open it.</p>
+        <button className="col-sm-2 btn btn-primary" onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
       </div>
       {/* Contact Modal */}
       { contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)}/>}
