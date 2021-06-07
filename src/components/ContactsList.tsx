@@ -53,7 +53,8 @@ export default function ContactsList({ contacts }: ContactsListProps): JSX.Eleme
       
       {/* Contact List */}
       <div className="table-responsive">
-        <table className="table table-hover">
+        <table className="table table-hover table-light">
+          {/* Weird bug on Edge: Header bottom border disappears when hovering over first row */}
           <thead>
             <tr>
               <th scope="col">Name</th>
