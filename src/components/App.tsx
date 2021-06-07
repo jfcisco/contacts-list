@@ -5,8 +5,8 @@ import { Pages, PageContextProvider, Page } from '../contexts/PageContext';
 
 export default function App(): JSX.Element {
   return (
-    <div className="container mt-2">
-      <h1>My Contacts</h1>
+    <div className="container mt-2 mt-md-5">
+      <h1 className="text-muted">My Contacts</h1>
       <PageContextProvider>
         <Page showFor={Pages.CREATE}>
           <ContactCreate />
