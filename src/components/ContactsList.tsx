@@ -1,7 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Pages, PageContext } from '../contexts/PageContext';
 import { Contact, getPrimaryContactNumber, getAgeFromBirthday } from '../types/Contact';
 import ContactView from './ContactView';
+import useContacts from '../hooks/useContacts';
 
 type ContactsListRowProps = {
   contact: Contact;
@@ -38,10 +39,19 @@ type ContactsListProps = {
   contacts: Contact[]
 }
 
-export default function ContactsList({ contacts }: ContactsListProps): JSX.Element {
+export default function ContactsList(): JSX.Element {
   const { setCurrentPage } = useContext(PageContext);
+  const [contacts, setContacts] = useState<Contact[] | undefined>();
   const [contactShown, setContactShown] = useState<Contact | null>(null);
+  const { getContacts } = useContacts();
   
+  useEffect(() => {
+    getContacts()
+    .then(contacts => {
+      setContacts(contacts)
+    });
+  }, []);
+
   return (
     <>
       <div className="row mb-4">
@@ -65,7 +75,11 @@ export default function ContactsList({ contacts }: ContactsListProps): JSX.Eleme
             </tr>
           </thead>
           <tbody>
-            {contacts.map((c) => <ContactsListRow key={c.id} contact={c} onClick={() => setContactShown(c)}/>)}
+            { 
+              contacts 
+              ? contacts.map((c) => <ContactsListRow key={c.id} contact={c} onClick={() => setContactShown(c)}/>) 
+              : "Loading..."
+            }
           </tbody>
         </table>
       </div>

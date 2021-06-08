@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact } from '../types/Contact';
+import useContactsDelay from '../hooks/useContacts';
 import "./ContactCreate.css";
 
 type FormInput = HTMLInputElement | HTMLSelectElement;
@@ -99,8 +100,11 @@ type ContactFormValues = {
 }
 
 /** Form to create a contact record */
-export default function ContactCreate({onCreate}: ContactCreateProps) {
+export default function ContactCreate() {
   const { setCurrentPage } = useContext(PageContext);
+  const { addContact } = useContactsDelay();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const defaultValues: ContactFormValues = {
     firstname: "",
     middlename: "",
@@ -115,6 +119,8 @@ export default function ContactCreate({onCreate}: ContactCreateProps) {
   const [formValues, setFormValues] = useState<ContactFormValues>(defaultValues);
 
   function handleChange(e: React.SyntheticEvent<FormInput>) {
+    if (isSubmitting) return;
+    
     const { name, value } = e.currentTarget;
 
     setFormValues(state => ({
@@ -138,9 +144,13 @@ export default function ContactCreate({onCreate}: ContactCreateProps) {
       emailAddress: "test@example.com",
       contactNumbers: ["1", "2"]
     }
-
-    onCreate(newContact);
-    goBack();
+    
+    setIsSubmitting(true);
+    addContact(newContact)
+      .then((contact) => { 
+        console.log(`Contact id=${contact.id} added!`);
+        goBack();
+      });
   }
 
   function goBack() {
@@ -187,7 +197,7 @@ export default function ContactCreate({onCreate}: ContactCreateProps) {
           <TextInput name="companyname" label="Company Name" />
 
           <div className="d-flex my-2">
-            <input type="submit" className="btn btn-primary flex-grow-1 me-lg-2" />
+            <input disabled={isSubmitting} type="submit" className="btn btn-primary flex-grow-1 me-lg-2" />
             <button className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => goBack()}>
               Go Back
           </button>
