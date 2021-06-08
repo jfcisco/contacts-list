@@ -28,7 +28,7 @@ export function setPrimaryContactNumber(contacts: string[], contact: string): st
   const indexOfContact = contactsCopy.indexOf(contact);
 
   // Contact not in contacts
-  if (indexOfContact === -1) throw `${contact} not in contacts`;
+  if (indexOfContact === -1) throw new Error(`${contact} not in contacts`);
 
   const oldHead = contactsCopy[0];
   contactsCopy[0] = contactsCopy[indexOfContact];
