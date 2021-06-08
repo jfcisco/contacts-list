@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact } from '../types/Contact';
 import useContactsDelay from '../hooks/useContacts';
-import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from './form'; 
+import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form'; 
 import "./ContactCreate.css";
 
 type ContactFormValues = {

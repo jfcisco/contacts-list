@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Pages, PageContext } from '../contexts/PageContext';
 import { Contact, getPrimaryContactNumber, getAgeFromBirthday } from '../types/Contact';
-import ContactView from './ContactView';
+import ContactView from '../components/ContactViewModal';
 import useContacts from '../hooks/useContacts';
 
 type ContactsListRowProps = {
@@ -33,10 +33,6 @@ function ContactsListRow({ contact, onClick }: ContactsListRowProps): JSX.Elemen
       <td>{primaryContact}</td>
     </tr>
   )
-}
-
-type ContactsListProps = {
-  contacts: Contact[]
 }
 
 export default function ContactsList(): JSX.Element {
