@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact } from '../types/Contact';
 import "./ContactCreate.css";
@@ -18,7 +18,7 @@ const DEFAULT_FIELD_CLASS = "form-control mb-2";
 
 /** Renders a controlled \<input type="text"\> */
 function TextInput({ name, label, classes = DEFAULT_FIELD_CLASS, required }: TextInputProps) {
-  const { values, handleChange } = useContext(FormContext);
+  const { values, handleChange } = useFormContext();
 
   return (
     <>
@@ -30,7 +30,7 @@ function TextInput({ name, label, classes = DEFAULT_FIELD_CLASS, required }: Tex
 
 /** Renders a controlled \<input type="date"\> to taken in a Birthday */
 function BirthdayInput() {
-  const { values, handleChange } = useContext(FormContext);
+  const { values, handleChange } = useFormContext();
 
   return (
     <>
@@ -43,7 +43,7 @@ function BirthdayInput() {
 /** Renders a controlled input component for gender */
 function GenderSelect() {
   const listOfGenders = ["", "Male", "Female", "Non-binary"];
-  const { values, handleChange } = useContext(FormContext);
+  const { values, handleChange } = useFormContext();
 
   return (
     <>
@@ -67,13 +67,41 @@ type FormContextType = {
   handleChange: React.FormEventHandler<FormInput>
 }
 // TODO: Extract FormContext to another file 
-// TODO: Make this type-safe https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context
-const FormContext = React.createContext<FormContextType>(undefined!);
+
+function createFormContext() {
+  // Code reference: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context
+  const FormContext = React.createContext<FormContextType | undefined>(undefined);
+
+  function useFormContext() {
+    const c = useContext(FormContext);
+    if (c === undefined) {
+      throw new Error("useFormContext must be used inside a FormContextProvider with a value");
+    }
+    return c;
+  }
+
+  return [useFormContext, FormContext.Provider] as const;
+}
+
+const [useFormContext, FormContextProvider] = createFormContext();
+
+type ContactCreateProps = {
+  onCreate: (newContact: Contact) => void;
+}
+
+type ContactFormValues = {
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  birthday: string;
+  gender: string;
+  companyname: string;
+}
 
 /** Form to create a contact record */
-export default function ContactCreate() {
+export default function ContactCreate({onCreate}: ContactCreateProps) {
   const { setCurrentPage } = useContext(PageContext);
-  const defaultValues = {
+  const defaultValues: ContactFormValues = {
     firstname: "",
     middlename: "",
     lastname: "",
@@ -84,7 +112,7 @@ export default function ContactCreate() {
 
   // React magic for managing form state
   // Heavily inspired by Formik's APIs: http://formik.org/ 
-  const [formValues, setFormValues] = useState(defaultValues);
+  const [formValues, setFormValues] = useState<ContactFormValues>(defaultValues);
 
   function handleChange(e: React.SyntheticEvent<FormInput>) {
     const { name, value } = e.currentTarget;
@@ -97,13 +125,33 @@ export default function ContactCreate() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // TODO: Add validation
+
+    // Map form values to Contact type
+    const newContact: Contact = {
+      id: Math.floor(Math.random() * 1000 + 2),
+      firstName: formValues.firstname,
+      middleName: formValues.middlename,
+      lastName: formValues.lastname,
+      birthday: new Date(1998, 7, 4),
+      address: { addressLine: "a", cityProvince: "b", country: "c"},
+      emailAddress: "test@example.com",
+      contactNumbers: ["1", "2"]
+    }
+
+    onCreate(newContact);
+    goBack();
+  }
+
+  function goBack() {
+    setCurrentPage(Pages.LIST);
   }
 
   return (
     <div className="mt-2">
       <pre><span>Debugging only, PLEASE REMOVE</span>{JSON.stringify(formValues)}</pre>
       {/* TODO: Add styling especially required fields */}
-      <FormContext.Provider value={{ values: formValues, handleChange }}>
+      <FormContextProvider value={{ values: formValues, handleChange }}>
         <form className="container" onSubmit={(e) => handleSubmit(e)}>
           <h2>Create Contact</h2>
           <p className="form-text"><span className="text-danger">*</span> indicates required fields.</p>
@@ -118,6 +166,7 @@ export default function ContactCreate() {
           <GenderSelect />
 
           {/* Address input group*/}
+          {/* TODO: Create Address Input Component */}
           <fieldset name="address" className="my-4">
             <legend>Address</legend>
             <label htmlFor="addressline" className="form-label">Address Line</label>
@@ -139,12 +188,12 @@ export default function ContactCreate() {
 
           <div className="d-flex my-2">
             <input type="submit" className="btn btn-primary flex-grow-1 me-lg-2" />
-            <button className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => setCurrentPage(Pages.LIST)}>
+            <button className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => goBack()}>
               Go Back
           </button>
           </div>
         </form>
-      </FormContext.Provider>
+      </FormContextProvider>
     </div>
   )
 }
