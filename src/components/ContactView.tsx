@@ -87,7 +87,6 @@ const ContactView = ({ contact, onHide }: ContactViewProps): JSX.Element => {
 
               <dt>Contact Numbers:</dt>
               <dd>
-                {/* TODO: Look up if below is legal HTML */}
                 <ul>
                   {contactNumbers.map((contactNumber, i) => {
                     // Assume that first contact number is primary
