@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Pages, PageContext } from '../contexts/PageContext';
 import { Contact, getPrimaryContactNumber, getAgeFromBirthday } from '../types/Contact';
 import ContactView from '../components/ContactViewModal';
@@ -37,16 +37,8 @@ function ContactsListRow({ contact, onClick }: ContactsListRowProps): JSX.Elemen
 
 export default function ContactsList(): JSX.Element {
   const { setCurrentPage } = useContext(PageContext);
-  const [contacts, setContacts] = useState<Contact[] | undefined>();
   const [contactShown, setContactShown] = useState<Contact | null>(null);
-  const { getContacts } = useContacts();
-  
-  useEffect(() => {
-    getContacts()
-    .then(contacts => {
-      setContacts(contacts)
-    });
-  }, []);
+  const { contacts } = useContacts();
 
   return (
     <>

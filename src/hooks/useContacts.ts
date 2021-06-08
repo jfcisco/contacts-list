@@ -19,11 +19,6 @@ export default function useContactsDelay() {
     return newContact;
   }
 
-  async function getContacts() {
-    await delay();
-    return contacts;
-  }
-
   async function updateContact(updatedContact: Contact) {
     await delay();
     if (!isExistingContact(updatedContact)) throw new Error(`${updatedContact} is not an existing contact!`);
@@ -40,5 +35,5 @@ export default function useContactsDelay() {
   }
 
   // Using const assertion for custom hook: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/hooks/#custom-hooks
-  return { contacts, addContact, getContacts, updateContact };
+  return { contacts, addContact, updateContact };
 }
