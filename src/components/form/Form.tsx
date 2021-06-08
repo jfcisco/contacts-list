@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 import { FormContextProvider } from '../../contexts/FormContext';
 import { FormInput } from '../../types/FormInput';
 
-// type ContactFormValues = {
-//   firstname: string;
-//   middlename: string;
-//   lastname: string;
-//   birthday: string;
-//   gender: string;
-//   companyname: string;
-// } | FormValues;
 type FormValues = {
   [fieldName: string]: string;
 };
 
 type FormProps = {
-  initialValues: FormValues; // TODO: Find better way of doing this
+  initialValues: FormValues;
   children: React.ReactNode;
   onSubmit: (values: FormValues) => void;
 };
