@@ -32,7 +32,7 @@ function ContactsListRow({ contact, onView: onView, onDelete }: ContactsListRowP
       <td>{address.cityProvince}</td>
       <td>{emailAddress}</td>
       <td>{primaryContact}</td>
-      <td><button className="btn btn-danger" onClick={(e) => { e.stopPropagation(); onDelete()}}>Delete</button></td>
+      <td><button className="btn btn-danger" onClick={(e) => { e.stopPropagation(); onDelete() }}>Delete</button></td>
     </tr>
   )
 }
@@ -42,13 +42,13 @@ type ContactsListProps = {
   deleteContact: (contact: Contact) => {};
 }
 
-export default function ContactsList({contacts, deleteContact}: ContactsListProps): JSX.Element {
+export default function ContactsList({ contacts, deleteContact }: ContactsListProps): JSX.Element {
   const { setCurrentPage } = useContext(PageContext);
   const [contactShown, setContactShown] = useState<Contact | null>(null);
 
   const handleDelete = (contact: Contact) => {
     const userConfirmed = window.confirm("Do you want to delete this contact? Click OK to confirm.");
-    
+
     if (userConfirmed) {
       deleteContact(contact);
     }
@@ -61,38 +61,47 @@ export default function ContactsList({contacts, deleteContact}: ContactsListProp
         <button className="col-2 btn btn-primary" onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
       </div>
       {/* Contact Modal */}
-      { contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)}/>}
-      
-      {/* Contact List */}
-      <div className="table-responsive">
-        <table className="table table-hover">
-          {/* Weird bug on Edge: Header bottom border disappears when hovering over first row */}
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Age</th>
-              <th scope="col">City/Province</th>
-              <th scope="col">Email</th>
-              <th scope="col">Contact Number (Primary)</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            { 
-              contacts 
-              ? contacts.map((c) => <ContactsListRow 
-                                      key={c.id} 
-                                      contact={c} 
-                                      onView={() => setContactShown(c)}
-                                      onEdit={() => {}}
-                                      onDelete={() => handleDelete(c)} />) 
-              : "Loading..."
-            }
-          </tbody>
-        </table>
+      { contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)} />}
 
-        { contacts?.length === 0 && <p className="text-center text-secondary">You have no contacts yet. Add a contact by clicking on the <span className="text-primary"><strong>Create Contact</strong></span> button above.</p>}
-      </div>
+      <ContactsTable contacts={contacts} setContactShown={setContactShown} handleDelete={handleDelete} />
     </>
   );
+}
+
+type ContactsTableProps = {
+  contacts: Contact[];
+  setContactShown: (c: Contact) => void;
+  handleDelete: (c: Contact) => void;
+}
+
+function ContactsTable({ contacts, setContactShown, handleDelete}: ContactsTableProps) {
+  return (<div className="table-responsive">
+    <table className="table table-hover">
+      {/* Weird bug on Edge: Header bottom border disappears when hovering over first row */}
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">City/Province</th>
+          <th scope="col">Email</th>
+          <th scope="col">Contact Number (Primary)</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          contacts
+            ? contacts.map((c) => <ContactsListRow
+              key={c.id}
+              contact={c}
+              onView={() => setContactShown(c)}
+              onEdit={() => { }}
+              onDelete={() => handleDelete(c)} />)
+            : "Loading..."
+        }
+      </tbody>
+    </table>
+
+    { contacts?.length === 0 && <p className="text-center text-secondary">You have no contacts yet. Add a contact by clicking on the <span className="text-primary"><strong>Create Contact</strong></span> button above.</p>}
+  </div>);
 }
