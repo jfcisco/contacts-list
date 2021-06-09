@@ -7,7 +7,7 @@ type FormContextType = {
   };
   handleChange: React.FormEventHandler<FormInput>;
 };
-// TODO: Extract FormContext to another file 
+ 
 function createFormContext() {
   // Code reference: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context
   const FormContext = React.createContext<FormContextType | undefined>(undefined);
