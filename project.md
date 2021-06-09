@@ -24,7 +24,7 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
 - [ ] Update a particular contact and save its changes.
     1. The required fields should still apply.
 
-- [ ] Delete a contact. When delete button is pressed, there should be a confirmation “Do you want to delete this contact?”.
+- [X] Delete a contact. When delete button is pressed, there should be a confirmation “Do you want to delete this contact?”.
     1. If the user says yes, proceed to delete the selected contact,
     2. if the user says no, go back to the list.
     

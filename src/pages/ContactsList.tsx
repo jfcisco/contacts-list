@@ -47,7 +47,7 @@ export default function ContactsList({contacts, deleteContact}: ContactsListProp
   const [contactShown, setContactShown] = useState<Contact | null>(null);
 
   const handleDelete = (contact: Contact) => {
-    const userConfirmed = window.confirm(`Are you sure you want to delete ${contact.firstName} ${contact.lastName}?`);
+    const userConfirmed = window.confirm("Do you want to delete this contact? Click OK to confirm.");
     
     if (userConfirmed) {
       deleteContact(contact);
