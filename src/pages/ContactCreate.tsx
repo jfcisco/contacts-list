@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact } from '../types/Contact';
-import useContactsDelay from '../hooks/useContacts';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form'; 
 import "./ContactCreate.css";
 
@@ -14,10 +13,13 @@ type ContactFormValues = {
   companyname: string;
 }
 
+
+type ContactCreateProps = {
+  createContact: (contact: Contact) => Promise<Contact>;
+}
 /** Form to create a contact record */
-export default function ContactCreate() {
+export default function ContactCreate({ createContact }: ContactCreateProps ) {
   const { setCurrentPage } = useContext(PageContext);
-  const { addContact } = useContactsDelay();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const initialValues = {
@@ -57,7 +59,7 @@ export default function ContactCreate() {
         initialValues={initialValues}
         onSubmit={(values) => {
           setIsSubmitting(true);
-          addContact(parseForm(values as ContactFormValues))
+          createContact(parseForm(values as ContactFormValues))
             .then((contact) => {
               console.log(`Contact id=${contact.id} added!`);
               goBack();
