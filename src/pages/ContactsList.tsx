@@ -32,7 +32,7 @@ function ContactsListRow({ contact, onView: onView, onDelete }: ContactsListRowP
       <td>{address.cityProvince}</td>
       <td>{emailAddress}</td>
       <td>{primaryContact}</td>
-      <td><button onClick={(e) => { e.stopPropagation(); onDelete()}}>Delete</button></td>
+      <td><button className="btn btn-danger" onClick={(e) => { e.stopPropagation(); onDelete()}}>Delete</button></td>
     </tr>
   )
 }
