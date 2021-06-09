@@ -58,28 +58,42 @@ const ContactView = ({ contact, onHide }: ContactViewProps): JSX.Element => {
             <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div className="modal-body">
-            {/* TODO: Grid styling for dl */}
-            <dl>
-              <dt>First Name</dt>
-              <dd>{firstName}</dd>
-              
-              <dt>Middle Name</dt>
-              <dd>{middleName}</dd>
-              
-              <dt>Last Name</dt>
-              <dd>{lastName}</dd>
-              
-              <dt>Birthday</dt>
-              <dd>{formatDate(birthday)}</dd>
+            <dl className="row">
+              <div className="col-sm-4">
+                <dt>First Name</dt>
+                <dd>{firstName}</dd>
+              </div>
 
-              <dt>Gender</dt>
-              <dd>{gender ? gender : "Not specified"}</dd>
+              <div className="col-sm-4">
+                <dt>Middle Name</dt>
+                <dd>{middleName}</dd>
+              </div>
+
+              <div className="col-sm-4">
+                <dt>Last Name</dt>
+                <dd>{lastName}</dd>
+              </div>
+
+              <div className="row row-cols-1 row-cols-md-2">
+                <dt className="col order-0">Birthday</dt>
+                <dd className="col order-md-2">{formatDate(birthday)}</dd>
+
+                <dt className="col order-md-1">Gender</dt>
+                <dd className="col order-md-3">{gender ? gender : "Not specified"}</dd>
+              </div>
               
               <dt>Address</dt>
               <dd>
-                <span>{address.addressLine}</span>
-                <span>{address.cityProvince}</span>
-                <span>{address.country}</span>
+                <dl className="row row-cols-md-1">
+                  <dt className="text-muted small">Address Line</dt>
+                  <dd className="">{address.addressLine}</dd>
+
+                  <dt className="text-muted small">City/Province</dt>
+                  <dd className="">{address.cityProvince}</dd>
+                  
+                  <dt className="text-muted small">Country</dt>
+                  <dd className="">{address.country}</dd>
+                </dl>
               </dd>
 
               <dt>Email Address</dt>
@@ -90,9 +104,8 @@ const ContactView = ({ contact, onHide }: ContactViewProps): JSX.Element => {
                 <ul>
                   {contactNumbers.map((contactNumber, i) => {
                     // Assume that first contact number is primary
-                    // TODO: Style primary contact number
-                    return (<li key={i} className={(i === 0) ? "contact-primary" : ""}>{contactNumber}</li>);
-                  }) }
+                    return (<li key={i} className={(i === 0) ? "text-primary" : ""}>{contactNumber.toString() + (i === 0 ? " (Primary)" : "")}</li>);
+                  })}
                 </ul>
               </dd>
 
