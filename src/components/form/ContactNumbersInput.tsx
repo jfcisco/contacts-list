@@ -1,25 +1,23 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 import { useFormContext } from "../../contexts/FormContext";
+import { FormValues } from "../../types/FormTypes";
 
-type ContactNumbersInputProps = {
-  value: string[];
-  onChange: () => void;
-};
 /** Custom input to get a list of contact numbers from a user  */
 export function ContactNumbersInput() {
-  const [localValues, setLocalValues] = React.useState<string[]>(["09088132706", "09088132706"]);
+  const { setFormValues } = useFormContext<FormValues>();
+  const [localValues, setLocalValues] = React.useState<string[]>([]);
   
-  
-  // const contactNumbers = Object.keys(values)
-  //   .filter(key => key.match(/contactNumber\[\d+\]/))
-  //   .map(contactField => values[contactField]);
+  React.useEffect(() => {
+    setFormValues(values => ({...values, contactNumbers: localValues}));
+  }, [localValues, setFormValues]);
 
   const addContactNumber = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.preventDefault();
     setLocalValues(values => [...values, ""]);
   }
 
-  const handleRemove = (index: number) => {
+  const handleRemove = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, index: number) => {
+    e.preventDefault();
     setLocalValues(values => values.filter((_, i) => i !== index));
   }
 
@@ -40,13 +38,13 @@ export function ContactNumbersInput() {
               <div className="input-group mt-2 mb-1">
                 <input
                   className="form-control"
-                  type="text"
+                  type="number"
                   name={`contactNumber[${i}]`}
                   value={number}
                   onChange={(e) => handleLocalChange(e, i)} />
                 { i !== 0 && <button className="btn btn-secondary">Set as Primary</button>}
                 
-                <button className="btn btn-danger" onClick={(e) => { e.preventDefault(); handleRemove(i); }}>Remove</button>
+                <button className="btn btn-danger" onClick={e=> handleRemove(e, i)}>Remove</button>
               </div>
             )
           })
