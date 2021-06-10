@@ -1,11 +1,12 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
-import { Address, Contact } from '../types/Contact';
-import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form'; 
+import { Address, Contact, Gender } from '../types/Contact';
+import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
 import "./ContactCreate.css";
 import { FormErrors, FormValues } from '../types/FormTypes';
+import { useFormContext } from '../contexts/FormContext';
 
-export const isNullOrWhitespace = (value: string | null | undefined): boolean => { 
+export const isNullOrWhitespace = (value: string | null | undefined): boolean => {
   if (value == null) return true; // loose compare is intentional
   return (value.trim() === "");
 }
@@ -31,7 +32,9 @@ interface CreateFormValues extends FormValues {
   lastName: string,
   birthday: string,
   gender?: string,
-  address: Address,
+  "address.addressLine": string,
+  "address.cityProvince": string,
+  "address.country": string,
   companyName?: string,
   contactNumbers: string[],
   email: string
@@ -49,7 +52,7 @@ type CreateFormErrors = MapFormFieldsToString<CreateFormValues> & FormErrors;
  */
 function validateContact(values: CreateFormValues): CreateFormErrors {
   const errors: CreateFormErrors = {};
-  
+
   if (isNullOrWhitespace(values.firstName)) {
     errors.firstName = "First name is a required field.";
   }
@@ -82,7 +85,7 @@ function validateContact(values: CreateFormValues): CreateFormErrors {
   if (isNullOrWhitespace(values.address.country)) {
     addressErrors.push("Please enter a country.");
   }
-  
+
   if (addressErrors.length > 0) {
     errors.address = addressErrors.join(" ");
   }
@@ -97,7 +100,7 @@ function validateContact(values: CreateFormValues): CreateFormErrors {
   if (values.contactNumbers.length < 3) {
     errors.contactNumbers = "Please enter at least three contact numbers";
   }
-  
+
   return errors;
 }
 
@@ -106,7 +109,7 @@ type ContactCreateProps = {
 }
 
 /** Form to create a contact record */
-export default function ContactCreate({ createContact }: ContactCreateProps ) {
+export default function ContactCreate({ createContact }: ContactCreateProps) {
   const { setCurrentPage } = useContext(PageContext);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -116,13 +119,11 @@ export default function ContactCreate({ createContact }: ContactCreateProps ) {
     lastName: "",
     birthday: "",
     gender: "",
-    address: {
-      addressLine: "",
-      cityProvince: "",
-      country: ""
-    },
+    "address.addressLine": "",
+    "address.cityProvince": "",
+    "address.country": "",
     companyName: "",
-    contactNumbers: [],
+    contactNumbers: [], // convention for ContactNumber array
     email: ""
   };
 
@@ -138,11 +139,22 @@ export default function ContactCreate({ createContact }: ContactCreateProps ) {
         onSubmit={(values) => {
           setIsSubmitting(true);
           // TODO: Parse values to Contact type. Values are valid at this point.
-          // createContact(values)
-          //   .then((contact) => {
-          //     console.log(`Contact id=${contact.id} added!`);
-          //     goBack();
-          //   });
+          createContact({
+            id: -1, // temporary ID to be replaced with a real one
+            firstName: values.firstName,
+            middleName: values.middleName,
+            lastName: values.lastName,
+            birthday: new Date(values.birthday),
+            gender: values.gender as Gender | undefined,
+            address: values.address, // TODO: validate and parse
+            companyName: values.companyName,
+            emailAddress: values.email,
+            contactNumbers: values.contactNumbers
+          })
+            .then((contact) => {
+              console.log(`Contact id=${contact.id} added!`);
+              goBack();
+            });
         }}>
         <h2>Create Contact</h2>
         <p className="form-text"><span className="text-danger">*</span> indicates required fields.</p>
@@ -156,28 +168,31 @@ export default function ContactCreate({ createContact }: ContactCreateProps ) {
         {/* Assumes gender is a select element */}
         <GenderSelect />
 
-        {/* Address input group*/}
-        {/* TODO: Create Address Input Component */}
         <fieldset name="address" className="my-4">
           <legend>Address</legend>
-          <label htmlFor="addressline" className="form-label">Address Line</label>
-          <input name="addressline" type="text" className="form-control mb-2" required />
-          <label htmlFor="cityprovince">City/Province</label>
-          <input name="cityprovince" type="text" className="form-control mb-2" required />
-          <label htmlFor="cityprovince">Country</label>
-          <input name="country" type="text" className="form-control mb-2" required />
+
+          <TextInput
+            label="Address Line"
+            name="address.addressLine" />
+
+          <TextInput
+            label="City/Province"
+            name="address.cityProvince" />
+
+          <TextInput
+            label="Country"
+            name="address.country" />
         </fieldset>
 
-        {/* What's the input type for email address? */}
         <label htmlFor="email" className="form-label">Email Address</label>
         <input name="email" type="email" className="form-control mb-2" required />
 
         {/* TODO: Create contact numbers input component */}
-        <ContactNumbersInput value={[]} onChange={() => { }} />
+        <ContactNumbersInput />
 
         <TextInput name="companyName" label="Company Name" />
 
-        <div className="d-flex my-2">
+        <div className="d-flex my-4">
           <input disabled={isSubmitting} type="submit" className="btn btn-primary flex-grow-1 me-lg-2" />
           <button className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => goBack()}>
             Go Back
