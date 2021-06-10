@@ -1,7 +1,7 @@
-type Gender = "Male" | "Female" | "Non-Binary";
+export type Gender = "Male" | "Female" | "Non-Binary";
 
 // Assumption: Parts of address is free-text
-type Address = {
+export type Address = {
   addressLine: string;
   cityProvince: string;
   country: string;
