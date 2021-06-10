@@ -1,9 +1,10 @@
 import { useFormContext } from '../../contexts/FormContext';
+import { FormValues } from '../../types/FormTypes';
 
 /** Renders a controlled input component for gender */
 export function GenderSelect() {
   const listOfGenders = ["", "Male", "Female", "Non-binary"];
-  const { values, handleChange } = useFormContext();
+  const { values, handleChange } = useFormContext<FormValues>();
 
   return (
     <>
@@ -13,7 +14,7 @@ export function GenderSelect() {
         value={values["gender"]}
         onChange={handleChange}
       >
-        {listOfGenders.map(gender => <option>{gender}</option>)}
+        {listOfGenders.map(gender => <option key={gender}>{gender}</option>)}
       </select>
     </>
   );

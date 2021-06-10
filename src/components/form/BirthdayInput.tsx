@@ -1,9 +1,9 @@
-import React from 'react';
 import { useFormContext } from '../../contexts/FormContext';
+import { FormValues } from '../../types/FormTypes';
 
 /** Renders a controlled \<input type="date"\> to taken in a Birthday */
 export function BirthdayInput() {
-  const { values, handleChange } = useFormContext();
+  const { values, handleChange } = useFormContext<FormValues>();
 
   return (
     <>
