@@ -35,7 +35,7 @@ const ProgressBar = ({ progress }: { progress: number }) => {
             opacity: (progress / 100)
           }} />
       </div>
-    ), document.querySelector('html') as Element);
+    ), document.querySelector('body') as Element);
 }
 
 export const PageContext = React.createContext<PageContextValue>(null!);
