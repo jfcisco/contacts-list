@@ -6,6 +6,9 @@ type FormContextType = {
     [field: string]: string;
   };
   handleChange: React.FormEventHandler<FormInput>;
+  errors: {
+    [field: string]: string;
+  }
 };
  
 function createFormContext() {
