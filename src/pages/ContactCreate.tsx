@@ -132,12 +132,12 @@ export default function ContactCreate({ createContact }: ContactCreateProps ) {
 
   return (
     <div className="mt-2">
-      {/* TODO: Add styling especially required fields */}
       <Form
         initialValues={initialValues}
         validate={validateContact}
         onSubmit={(values) => {
           setIsSubmitting(true);
+          // TODO: Parse values to Contact type. Values are valid at this point.
           // createContact(values)
           //   .then((contact) => {
           //     console.log(`Contact id=${contact.id} added!`);
