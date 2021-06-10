@@ -43,7 +43,7 @@ type ContactsListRowProps = {
   onDelete: () => void;
 }
 
-function ContactsListRow({ contact, onView: onView, onDelete }: ContactsListRowProps): JSX.Element {
+function ContactsListRow({ contact, onView, onDelete }: ContactsListRowProps): JSX.Element {
   const {
     firstName,
     lastName,
@@ -66,7 +66,8 @@ function ContactsListRow({ contact, onView: onView, onDelete }: ContactsListRowP
       <td>{emailAddress}</td>
       <td>{primaryContact}</td>
       <td>
-        <button className="btn btn-secondary" onClick={(e) => { e.stopPropagation(); onDelete() }}>Delete</button>
+        {/* TODO: Implement Update Contact */}
+        <button className="btn btn-secondary me-2" onClick={(e) => { e.stopPropagation() }}>Update</button>
         <button className="btn btn-danger" onClick={(e) => { e.stopPropagation(); onDelete() }}>Delete</button>
       </td>
     </tr>
