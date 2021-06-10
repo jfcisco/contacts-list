@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
-import { Address, Contact, Gender } from '../types/Contact';
+import { Contact, Gender } from '../types/Contact';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
 import "./ContactCreate.css";
 import { FormErrors, FormValues } from '../types/FormTypes';
-import { useFormContext } from '../contexts/FormContext';
 
 export const isNullOrWhitespace = (value: string | null | undefined): boolean => {
   if (value == null) return true; // loose compare is intentional
@@ -26,7 +25,7 @@ export const isValidEmail = (value: string) => {
   return true;
 }
 
-interface CreateFormValues extends FormValues {
+export interface CreateFormValues extends FormValues {
   firstName: string,
   middleName: string,
   lastName: string,
@@ -73,27 +72,22 @@ function validateContact(values: CreateFormValues): CreateFormErrors {
     errors.gender = "Please select a valid gender option.";
   }
 
-  let addressErrors: string[] = [];
-  if (isNullOrWhitespace(values.address.addressLine)) {
-    addressErrors.push("Please enter an address line.");
+  if (isNullOrWhitespace(values["address.addressLine"])) {
+    errors["address.addressLine"] = "Please enter an address line.";
   }
 
-  if (isNullOrWhitespace(values.address.cityProvince)) {
-    addressErrors.push("Please enter a city/province.");
+  if (isNullOrWhitespace(values["address.cityProvince"])) {
+    errors["address.cityProvince"] = "Please enter a city/province.";
   }
 
-  if (isNullOrWhitespace(values.address.country)) {
-    addressErrors.push("Please enter a country.");
-  }
-
-  if (addressErrors.length > 0) {
-    errors.address = addressErrors.join(" ");
+  if (isNullOrWhitespace(values["address.country"])) {
+    errors["address.country"] = "Please enter a country.";
   }
 
   if (isNullOrWhitespace(values.email)) {
     errors.email = "Please enter an email address.";
   }
-  else if (isValidEmail(values.email)) {
+  else if (!isValidEmail(values.email)) {
     errors.email = "Please enter a valid email address in the format (name@example.com).";
   }
 
@@ -123,7 +117,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
     "address.cityProvince": "",
     "address.country": "",
     companyName: "",
-    contactNumbers: [], // convention for ContactNumber array
+    contactNumbers: [],
     email: ""
   };
 
@@ -146,7 +140,11 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
             lastName: values.lastName,
             birthday: new Date(values.birthday),
             gender: values.gender as Gender | undefined,
-            address: values.address, // TODO: validate and parse
+            address: {
+              addressLine: values["address.addressLine"],
+              cityProvince: values["address.cityProvince"],
+              country: values["address.country"]
+            },
             companyName: values.companyName,
             emailAddress: values.email,
             contactNumbers: values.contactNumbers
@@ -184,8 +182,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
             name="address.country" />
         </fieldset>
 
-        <label htmlFor="email" className="form-label">Email Address</label>
-        <input name="email" type="email" className="form-control mb-2" required />
+        <TextInput type="email" label="Email Address" name="email" />
 
         {/* TODO: Create contact numbers input component */}
         <ContactNumbersInput />
