@@ -4,7 +4,7 @@ import { Pages, PageContextProvider, Page } from '../contexts/PageContext';
 import useContacts from '../hooks/useContacts';
 
 export default function App(): JSX.Element {
-  const { contacts, addContact, deleteContact } = useContacts();
+  const { contacts, addContact, deleteContact, updateContact } = useContacts();
   
   return (
     <div className="container mt-2 mt-md-5">
@@ -12,6 +12,10 @@ export default function App(): JSX.Element {
       <PageContextProvider>
         <Page showFor={Pages.CREATE}>
           <ContactCreate createContact={addContact} />
+        </Page>
+
+        <Page showFor={Pages.UPDATE}>
+          {/* TODO: Create Update Contact form */}
         </Page>
 
         <Page showFor={Pages.LIST}>

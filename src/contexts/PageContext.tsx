@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 /** Enumerates the pages of the application */
 export enum Pages {
   CREATE,
-  LIST
+  LIST,
+  UPDATE
 }
 
 type PageContextValue = {
