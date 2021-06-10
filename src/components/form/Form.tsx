@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FormContextProvider } from '../../contexts/FormContext';
 import { FormInput } from '../../types/FormInput';
 import { FormValues, FormErrors } from '../../types/FormTypes';
@@ -15,9 +15,23 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
   // Heavily inspired by Formik's APIs: http://formik.org/ 
   const [values, setFormValues] = useState<T>(initialValues);
   const [errors, setFormErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Partial<T>>({});
+  const formRef = useRef<HTMLFormElement>(null);
 
-  function handleChange(e: React.SyntheticEvent<FormInput>) {
-    const { name, value } = e.currentTarget;
+  React.useEffect(() => {
+    const errors = validate(values);
+    setFormErrors(errors);
+  }, [values, validate]);
+
+  function handleBlur(e: React.FocusEvent<FormInput>) {
+    setTouched(state => ({
+      ...state,
+      [e.target.name]: true
+    }))
+  }
+
+  function handleChange(e: React.ChangeEvent<FormInput>) {
+    const { name, value } = e.target;
 
     setFormValues(state => ({
       ...state,
@@ -37,8 +51,8 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
   }
 
   return (
-    <FormContextProvider value={{ values, handleChange, errors }}>
-      <form className="container" onSubmit={(e) => handleSubmit(e)}>
+    <FormContextProvider value={{ values, handleChange, errors, setFormValues, handleBlur, touched}}>
+      <form ref={formRef} className="container" onSubmit={(e) => handleSubmit(e)}>
         {children}
       </form>
     </FormContextProvider>
