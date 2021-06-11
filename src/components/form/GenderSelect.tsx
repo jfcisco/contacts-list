@@ -1,6 +1,6 @@
 import { useFormContext } from '../../contexts/FormContext';
 import { Gender } from '../../types/Contact';
-import { FormValues, FieldProps, FormErrors } from '../../types/FormTypes';
+import { FormValues, FieldProps } from '../../types/FormTypes';
 
 /** Renders a controlled input component for gender */
 export function GenderSelect({ name }: FieldProps) {
