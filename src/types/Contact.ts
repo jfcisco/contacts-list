@@ -1,4 +1,8 @@
-export type Gender = "Male" | "Female" | "Non-Binary";
+export const Gender = {
+  MALE: "Male",
+  FEMALE: "Female",
+  NONBINARY: "Non-Binary"
+} as const;
 
 // Assumption: Parts of address is free-text
 export type Address = {
@@ -13,7 +17,7 @@ export type Contact = {
   lastName: string;
   middleName: string;
   birthday: Date;
-  gender?: Gender;
+  gender?: typeof Gender[keyof typeof Gender];
   address: Address;
   emailAddress: string;
   contactNumbers: string[];
