@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { FormContextProvider } from '../../contexts/FormContext';
 import { FormInput } from '../../types/FormInput';
-import { FormValues, FormErrors } from '../../types/FormTypes';
+import { FormValues, FormErrors, FormTouched } from '../../types/FormTypes';
+import './Form.css';
 
 type FormProps<T> = {
   initialValues: T;
@@ -15,7 +16,7 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
   // Heavily inspired by Formik's APIs: http://formik.org/ 
   const [values, setFormValues] = useState<T>(initialValues);
   const [errors, setFormErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<Partial<T>>({});
+  const [touched, setTouched] = useState<FormTouched<keyof T>>({});
   const formRef = useRef<HTMLFormElement>(null);
 
   React.useEffect(() => {
@@ -42,7 +43,12 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (Object.keys(validate(values)).length !== 0) { // Validate method returns errors
+    // Set all fields as touched
+    setTouched(Object.keys(values)
+      .reduce((previousState, key) => ({ ...previousState, [key]: true }), {}));
+    
+    // Check if validate function detected errors
+    if (Object.keys(validate(values)).length !== 0) { 
       setFormErrors(validate(values));
     }
     else {
@@ -52,7 +58,7 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
 
   return (
     <FormContextProvider value={{ values, handleChange, errors, setFormValues, handleBlur, touched}}>
-      <form ref={formRef} className="container" onSubmit={(e) => handleSubmit(e)}>
+      <form ref={formRef} className="container" onSubmit={(e) => handleSubmit(e)} noValidate>
         {children}
       </form>
     </FormContextProvider>
