@@ -165,7 +165,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
         
         <div className="d-flex my-4">
           <input disabled={isSubmitting} type="submit" className="btn btn-primary flex-grow-1 me-lg-2" />
-          <button className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => goBack()}>
+          <button type="button" className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => goBack()}>
             Go Back
           </button>
         </div>
