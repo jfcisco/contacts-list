@@ -147,15 +147,18 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
 
           <TextInput
             label="Address Line"
-            name="address.addressLine" />
+            name="address.addressLine"
+            required />
 
           <TextInput
             label="City/Province"
-            name="address.cityProvince" />
+            name="address.cityProvince"
+            required />
 
           <TextInput
             label="Country"
-            name="address.country" />
+            name="address.country"
+            required />
         </fieldset>
 
         <ContactNumbersInput name="contactNumbers" />
