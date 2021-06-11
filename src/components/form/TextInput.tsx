@@ -17,7 +17,8 @@ export function TextInput({ name, label, required, type }: TextInputProps) {
   return (
     <div className="mb-2">
       <label htmlFor={name} className={`form-label ${(required === true ? "required-input" : "")}`}>{label}</label>
-      <input 
+      <input
+        id={name}
         name={name} 
         type={type}
         className={`form-control ${isInvalid ? "is-invalid" : ""}`} 
