@@ -1,4 +1,4 @@
-import { Contact } from "./types/Contact";
+import { Contact, Gender } from "./types/Contact";
 
 export const sampleContacts: Contact[] = [{
   id: 1,
@@ -6,7 +6,7 @@ export const sampleContacts: Contact[] = [{
   lastName: "Doe",
   middleName: "Q.",
   birthday: new Date(1970, 1, 1),
-  gender: "Male",
+  gender: Gender.MALE,
   address: {
     addressLine: "5 Oak Way",
     cityProvince: "Sample City",
