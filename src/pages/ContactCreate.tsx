@@ -2,22 +2,11 @@ import { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact, Gender } from '../types/Contact';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
-import "./ContactCreate.css";
 import { FormErrors, FormValues } from '../types/FormTypes';
 
 export const isNullOrWhitespace = (value: string | null | undefined): boolean => {
   if (value == null) return true; // loose compare is intentional
   return (value.trim() === "");
-}
-
-export const isValidDate = (value: string) => {
-  // TODO: Not yet implemented
-  return true;
-}
-
-export const isValidGender = (value: string) => {
-  // HACK: Type checking at runtime
-  return (value === "Male") || (value === "Female") || (value === "Non-binary");
 }
 
 export const isValidEmail = (value: string) => {
@@ -30,7 +19,7 @@ export interface CreateFormValues extends FormValues {
   middleName: string,
   lastName: string,
   birthday: string,
-  gender?: string,
+  gender?: typeof Gender[keyof typeof Gender],
   "address.addressLine": string,
   "address.cityProvince": string,
   "address.country": string,
@@ -39,12 +28,8 @@ export interface CreateFormValues extends FormValues {
   email: string
 }
 
-type MapFormFieldsToString<Type> = {
-  [Property in keyof Type]?: string;
-}
-
 // Map CreateFormValues key to string, and make all optional
-type CreateFormErrors = MapFormFieldsToString<CreateFormValues> & FormErrors;
+interface CreateFormErrors extends FormErrors { }
 
 /** Forms a Contact from the given form values, or returns an error object if the contact cannot be parsed.
  * The error object contains the list of validation errors.
@@ -53,23 +38,20 @@ function validateContact(values: CreateFormValues): CreateFormErrors {
   const errors: CreateFormErrors = {};
 
   if (isNullOrWhitespace(values.firstName)) {
-    errors.firstName = "First name is a required field.";
+    errors.firstName = "Please enter the contact's first name.";
   }
 
   if (isNullOrWhitespace(values.middleName)) {
-    errors.middleName = "Middle name is a required field.";
+    errors.middleName = "Please enter the contact's middle name.";
   }
 
   if (isNullOrWhitespace(values.lastName)) {
-    errors.lastName = "Last name is a required field.";
+    errors.lastName = "Please enter the contact's last name.";
   }
 
-  if (!isValidDate(values.birthday)) {
-    errors.firstName = "Birthday is a required field.";
-  }
-
-  if (values.gender && !isValidGender(values.gender)) {
-    errors.gender = "Please select a valid gender option.";
+  // Assumption: Browser validation will be used for the birthday field
+  if (isNullOrWhitespace(values.birthday)) {
+    errors.birthday = "Please enter a valid date for birthday.";
   }
 
   if (isNullOrWhitespace(values["address.addressLine"])) {
@@ -112,7 +94,6 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
     middleName: "",
     lastName: "",
     birthday: "",
-    gender: "",
     "address.addressLine": "",
     "address.cityProvince": "",
     "address.country": "",
@@ -139,7 +120,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
             middleName: values.middleName,
             lastName: values.lastName,
             birthday: new Date(values.birthday),
-            gender: values.gender as Gender | undefined,
+            gender: values.gender ? values.gender : undefined,
             address: {
               addressLine: values["address.addressLine"],
               cityProvince: values["address.cityProvince"],
@@ -161,10 +142,10 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
         <TextInput name="middleName" label="Middle Name" required />
         <TextInput name="lastName" label="Last Name" required />
 
-        <BirthdayInput />
+        <BirthdayInput name="birthday" />
 
         {/* Assumes gender is a select element */}
-        <GenderSelect />
+        <GenderSelect name="gender"/>
 
         <fieldset name="address" className="my-4">
           <legend>Address</legend>
@@ -182,7 +163,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
             name="address.country" />
         </fieldset>
 
-        <TextInput type="email" label="Email Address" name="email" />
+        <TextInput type="email" label="Email Address" name="email" required />
 
         {/* TODO: Create contact numbers input component */}
         <ContactNumbersInput />
