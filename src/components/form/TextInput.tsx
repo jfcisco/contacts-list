@@ -1,14 +1,12 @@
 import { useFormContext } from '../../contexts/FormContext';
-import { FormValues } from '../../types/FormTypes';
+import { FormValues, FieldProps } from '../../types/FormTypes';
 
 type TextInputProps = {
-  name: string;
   /** Text to be shown for the field <label> */
   label: string;
-  classes?: string;
   required?: boolean;
   type?: string;
-};
+} & FieldProps;
 
 /** Renders a controlled \<input type="text"\> */
 export function TextInput({ name, label, required, type }: TextInputProps) {
@@ -17,7 +15,7 @@ export function TextInput({ name, label, required, type }: TextInputProps) {
   const isInvalid = touched[name] && errors[name];
 
   return (
-    <>
+    <div className="mb-2">
       <label htmlFor={name} className={`form-label ${(required === true ? "required-input" : "")}`}>{label}</label>
       <input 
         name={name} 
@@ -26,7 +24,7 @@ export function TextInput({ name, label, required, type }: TextInputProps) {
         value={values[name]} 
         onChange={handleChange} 
         onBlur={handleBlur} />
-      { touched[name] && errors[name] && <div className="text-danger mb-2">{errors[name]}</div> }
-    </>
+      { isInvalid && <div className="text-danger">{errors[name]}</div> }
+    </div>
   );
 }
