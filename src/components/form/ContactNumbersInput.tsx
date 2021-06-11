@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormContext } from "../../contexts/FormContext";
+import { setPrimaryContactNumber } from "../../types/Contact";
 import { FormValues, FieldProps } from "../../types/FormTypes";
 
 /** Custom input to get a list of contact numbers from a user  */
@@ -12,18 +13,15 @@ export function ContactNumbersInput({ name }: FieldProps) {
     setFormValues(values => ({ ...values, [name]: localValues }));
   }, [localValues, name, setFormValues]);
 
-  const addContactNumber = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    e.preventDefault();
+  const addContactNumber = () => {
     setLocalValues(values => [...values, ""]);
   }
 
-  const handleRemove = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, index: number) => {
-    e.preventDefault();
+  const handleRemove = (index: number) => {
     setLocalValues(values => values.filter((_, i) => i !== index));
   }
 
   const handleLocalChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    e.preventDefault();
     const newValue = e.target.value;
 
     // Test against the pattern stated in the input
@@ -31,16 +29,20 @@ export function ContactNumbersInput({ name }: FieldProps) {
     setLocalValues(values => values.map((value, i) => i === index ? e.target.value : value));
   }
 
+  const handleSetPrimaryNumber = (index: number) => {
+    setLocalValues(values => setPrimaryContactNumber(values, values[index]));
+  }
+
   return (
     <fieldset className="my-4 row">
       <legend className="col-md-10 required-input">Contact Numbers</legend>
-      <button className="btn btn-primary col-md-2" onClick={e => addContactNumber(e)}>Add Contact Number</button><br />
+      <button type="button" className="btn btn-primary col-md-2" onClick={() => addContactNumber()}>Add Contact Number</button><br />
       {
         localValues.length > 0 &&
         localValues.map((number, i) => {
           return (
             <div key={i} className="input-group mt-2 mb-1">
-              
+              { i === 0 && <span className="input-group-text">Primary Contact</span> }
             {/* Trying this one out: https://technology.blog.gov.uk/2020/02/24/why-the-gov-uk-design-system-team-changed-the-input-type-for-numbers/ */}
               <input
                 className={`form-control ${isInvalid ? "is-invalid" : ""}`}
@@ -52,9 +54,11 @@ export function ContactNumbersInput({ name }: FieldProps) {
                 onChange={(e) => handleLocalChange(e, i)}
                 onBlur={handleBlur}
               />
-              { i !== 0 && <button className="btn btn-secondary">Set as Primary</button>}
+              {
+                i !== 0 && <button type="button" className="btn btn-secondary" onClick={() => handleSetPrimaryNumber(i)}>Set as Primary Contact</button>
+              }
 
-              <button className="btn btn-danger" onClick={e => handleRemove(e, i)}>Remove</button>
+              <button type="button" className="btn btn-danger" onClick={() => handleRemove(i)}>Remove</button>
             </div>
           )
         })
