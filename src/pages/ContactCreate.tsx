@@ -3,19 +3,7 @@ import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact, Gender } from '../types/Contact';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
 import { FormErrors, FormValues } from '../types/FormTypes';
-
-/** Checks if the given value is null or whitespace */
-export const isNullOrWhitespace = (value: string | null | undefined): boolean => {
-  if (value == null) return true; // loose compare is intentional for checking null or undefined
-  return (value.trim() === "");
-}
-
-/** Returns true if given value is a valid email. */
-export const isValidEmail = (value: string) => {
-  // Format pattern is based  https://en.wikipedia.org/wiki/Email_address#Syntax
-  const validEmailFormat = /^([a-z]|[A-Z]|\d|\.(?!\.)|[!#$%&'*+-/=?^_`{|}~]){0,64}@([a-z]|[A-Z]|\d|-|\.){0,63}$/;
-  return validEmailFormat.test(value);
-}
+import { isNullOrWhitespace, isValidEmail } from './validations';
 
 interface CreateFormValues extends FormValues {
   firstName: string,
@@ -78,6 +66,9 @@ function validateContact(values: CreateFormValues): CreateFormErrors {
 
   if (values.contactNumbers.length < 3) {
     errors.contactNumbers = "Please enter at least three contact numbers";
+  }
+  else if (values.contactNumbers.some(number => isNullOrWhitespace(number))) {
+    errors.contactNumbers = "Please fill out or remove any empty rows.";
   }
 
   return errors;
@@ -144,8 +135,9 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
         <TextInput name="firstName" label="First Name" required />
         <TextInput name="middleName" label="Middle Name" required />
         <TextInput name="lastName" label="Last Name" required />
-
         <BirthdayInput name="birthday" />
+        <TextInput type="email" label="Email Address" name="email" required />
+        <TextInput name="companyName" label="Company Name" />
 
         {/* Assumes gender is a select element */}
         <GenderSelect name="gender"/>
@@ -166,13 +158,8 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
             name="address.country" />
         </fieldset>
 
-        <TextInput type="email" label="Email Address" name="email" required />
-
-        {/* TODO: Create contact numbers input component */}
-        <ContactNumbersInput />
-
-        <TextInput name="companyName" label="Company Name" />
-
+        <ContactNumbersInput name="contactNumbers" />
+        
         <div className="d-flex my-4">
           <input disabled={isSubmitting} type="submit" className="btn btn-primary flex-grow-1 me-lg-2" />
           <button className="btn btn-secondary flex-grow-1 ms-lg-2" onClick={() => goBack()}>

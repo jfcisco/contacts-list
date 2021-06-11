@@ -1,4 +1,4 @@
-import {isNullOrWhitespace} from './ContactCreate';
+import { isNullOrWhitespace } from "./validations";
 
 test('isNullOrWhitespace detects null or whitespace', () => {
   const testData = [null, "", "    ", undefined];
