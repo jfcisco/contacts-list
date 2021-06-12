@@ -11,7 +11,7 @@ export default function ContactsCards({ contacts, ...props }: ContactsCardsProps
   return (
     <>
       {
-        contacts.map(contact => <ContactCard contact={contact} {...props} />)
+        contacts.map(contact => <ContactCard key={contact.id} contact={contact} {...props} />)
       }
       {
         contacts.length === 0
