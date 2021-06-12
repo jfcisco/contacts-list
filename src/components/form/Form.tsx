@@ -11,7 +11,7 @@ type FormProps<T> = {
   validate?: (values: T) => FormErrors;
 };
 
-export function Form<T extends FormValues>({ initialValues, children, onSubmit, validate = (value: T) => ({}) }: FormProps<T>) {
+export function Form<T extends FormValues>({ initialValues, children, onSubmit, validate}: FormProps<T>) {
   // React magic for managing form state
   // Heavily inspired by Formik's APIs: http://formik.org/ 
   const [values, setFormValues] = useState<T>(initialValues);
@@ -21,6 +21,8 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
 
   // Perform validation on every change in values
   React.useEffect(() => {
+    if (!validate) return;
+    
     const errors = validate(values);
     setFormErrors(errors);
   }, [values, validate]);
@@ -49,7 +51,7 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
       .reduce((previousState, key) => ({ ...previousState, [key]: true }), {}));
     
     // Check if validate function detected errors
-    if (Object.keys(validate(values)).length !== 0) { 
+    if (validate && Object.keys(validate(values)).length !== 0) { 
       setFormErrors(validate(values));
     }
     else {
@@ -59,7 +61,7 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
 
   return (
     <FormContextProvider value={{ values, handleChange, errors, setFormValues, handleBlur, touched}}>
-      <form ref={formRef} className="container" onSubmit={(e) => handleSubmit(e)} noValidate>
+      <form ref={formRef} className="container-fluid" onSubmit={(e) => handleSubmit(e)} noValidate>
         {children}
       </form>
     </FormContextProvider>
