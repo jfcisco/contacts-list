@@ -8,10 +8,10 @@ type FormProps<T> = {
   initialValues: T;
   children: React.ReactNode;
   onSubmit: (values: T) => void;
-  validate: (values: T) => FormErrors;
+  validate?: (values: T) => FormErrors;
 };
 
-export function Form<T extends FormValues>({ initialValues, children, onSubmit, validate }: FormProps<T>) {
+export function Form<T extends FormValues>({ initialValues, children, onSubmit, validate = (value: T) => ({}) }: FormProps<T>) {
   // React magic for managing form state
   // Heavily inspired by Formik's APIs: http://formik.org/ 
   const [values, setFormValues] = useState<T>(initialValues);
@@ -19,6 +19,7 @@ export function Form<T extends FormValues>({ initialValues, children, onSubmit, 
   const [touched, setTouched] = useState<FormTouched<keyof T>>({});
   const formRef = useRef<HTMLFormElement>(null);
 
+  // Perform validation on every change in values
   React.useEffect(() => {
     const errors = validate(values);
     setFormErrors(errors);
