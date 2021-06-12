@@ -22,6 +22,8 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
     }
   }
 
+  const listProps = { contacts, setContactShown, handleDelete };
+
   return (
     <>
       <div className="row mb-4 px-4">
@@ -33,12 +35,12 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
       
       {/* Display the data table when screen is large enough */}
       <div className="d-none d-md-block">
-        <ContactsTable contacts={contacts} setContactShown={setContactShown} handleDelete={handleDelete} />
+        <ContactsTable {...listProps} />
       </div>
 
       {/* Oherwise, display cards that are friendlier to small screens */}
       <div className="d-md-none">
-        <ContactsCards contacts={contacts} setContactShown={setContactShown} handleDelete={handleDelete} />
+        <ContactsCards {...listProps} />
       </div>
     </>
   );
