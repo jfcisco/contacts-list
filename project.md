@@ -4,7 +4,7 @@
 
 Create a contact list webpage mockup with CRUD functions. User should be able to:
 
-- [ ] Create a contact list using a form.
+- [X] Create a contact list using a form.
     1. The form includes the following fields (those with [asterisks] are required fields):
         - a. First name*
         - b. Last name*
@@ -18,8 +18,8 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
 
 - [X] See a list of contact forms, having columns for Name (Last name, First name, Middle initial), Age, City/Province, Email and Contact number (primary).
     1. When a particular contact is selected for viewing, all of its detail is displayed in a modal.
-    - [ ] Address is formatted correctly.
-    - [ ] Primary contact number is indicated correctly.
+    - [X] Address is formatted correctly.
+    - [X] Primary contact number is indicated correctly.
 
 - [ ] Update a particular contact and save its changes.
     1. The required fields should still apply.
