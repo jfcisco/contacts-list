@@ -10,16 +10,20 @@ export function GenderSelect({ name }: FieldProps) {
   const isInvalid = touched[name] && errors[name];
 
   return (
-    <div className="mb-2">
-      <label htmlFor={name} className="form-label">Gender</label>
-      <select name={name}
-        className={`form-select mb-2 ${isInvalid ? "is-invalid" : ""}`}
-        value={values["gender"]}
-        onChange={handleChange}
-        onBlur={handleBlur}>
-        {listOfGenders.map(gender => <option key={gender}>{gender}</option>)}
-      </select>
-      { isInvalid && <div className="text-danger mb-2">{errors[name]}</div> }
+    <div className="mb-2 row">
+      <div className="col-4">
+        <label htmlFor={name} className="form-label">Gender</label>
+      </div>
+      <div className="col-8 mb-2">
+        <select name={name}
+          className={`form-select ${isInvalid ? "is-invalid" : ""}`}
+          value={values["gender"]}
+          onChange={handleChange}
+          onBlur={handleBlur}>
+          {listOfGenders.map(gender => <option key={gender}>{gender}</option>)}
+        </select>
+        {isInvalid && <div className="text-danger mb-2">{errors[name]}</div>}
+      </div>
     </div>
   );
 }

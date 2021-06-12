@@ -15,17 +15,21 @@ export function TextInput({ name, label, required, type }: TextInputProps) {
   const isInvalid = touched[name] && errors[name];
 
   return (
-    <div className="mb-2">
-      <label htmlFor={name} className={`form-label ${(required === true ? "required-input" : "")}`}>{label}</label>
-      <input
-        id={name}
-        name={name} 
-        type={type}
-        className={`form-control ${isInvalid ? "is-invalid" : ""}`} 
-        value={values[name]} 
-        onChange={handleChange} 
-        onBlur={handleBlur} />
-      { isInvalid && <div className="text-danger">{errors[name]}</div> }
+    <div className="mb-2 row">
+      <div className="col-4">
+        <label htmlFor={name} className={`form-label text-wrap ${(required === true ? "required-input" : "")}`}>{label}</label>
+      </div>
+      <div className="col-8">
+        <input
+          id={name}
+          name={name} 
+          type={type}
+          className={`form-control ${isInvalid ? "is-invalid" : ""}`} 
+          value={values[name]} 
+          onChange={handleChange} 
+          onBlur={handleBlur} />
+      { isInvalid && <span className="text-danger col-12">{errors[name]}</span> }
+      </div>
     </div>
   );
 }
