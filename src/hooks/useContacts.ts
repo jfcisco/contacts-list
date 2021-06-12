@@ -5,7 +5,7 @@ import { Contact } from '../types/Contact';
 const DELAY_TIME = 700;
 const delay = () => new Promise((resolve) => setTimeout(resolve, DELAY_TIME));
 
-/** Custom hook  for data operations. Simulates a backend that is asynchronous for CRUD contacts */ 
+/** Custom hook for data operations. Simulates a backend that is asynchronous for CRUD contacts */ 
 export default function useContactsDelay() {
   const [contacts, setContacts] = useState<Contact[]>([]);
 
@@ -17,6 +17,7 @@ export default function useContactsDelay() {
     return contacts.find(c => c.id === testContact.id) !== undefined;
   }
 
+  /** Adds a contact to the list of contacts */
   async function addContact(newContact: Contact) {
     const oldContacts = [...contacts];
     setContacts(contacts => [newContact, ...contacts]);
@@ -31,6 +32,7 @@ export default function useContactsDelay() {
     return newContact;
   }
 
+  /** Updates an existing contact */
   async function updateContact(updatedContact: Contact) {
     const oldContacts = [...contacts];
     setContacts(contacts => contacts.map(contact => (contact.id === updatedContact.id) ? updatedContact : contact));
@@ -46,6 +48,7 @@ export default function useContactsDelay() {
     return updatedContact;
   }
 
+  /** Deletes a contact that is placed in */
   async function deleteContact(contactToDelete: Contact) {
     const oldContacts = [...contacts];
     setContacts(contacts => contacts.filter(c => c.id !== contactToDelete.id));
