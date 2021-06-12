@@ -4,6 +4,7 @@ import { Contact } from '../types/Contact';
 import ContactView from '../components/ContactViewModal';
 import ContactsTable from '../components/ContactsTable';
 import ContactsCards from '../components/ContactsCards';
+import { Form, TextInput } from '../components/form';
 
 type ContactsListProps = {
   contacts: Contact[];
@@ -32,7 +33,9 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
       </div>
       {/* Contact Modal */}
       {contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)} />}
-      
+
+      <ContactsFilter />
+
       {/* Display the data table when screen is large enough */}
       <div className="d-none d-md-block">
         <ContactsTable {...listProps} />
@@ -43,5 +46,35 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
         <ContactsCards {...listProps} />
       </div>
     </>
+  );
+}
+
+interface ContactsFilterValues {
+  name: string,
+  email: string,
+  cityProvince: string
+}
+
+function ContactsFilter() {
+  const initialQuery: ContactsFilterValues = {
+    name: '',
+    email: '',
+    cityProvince: ''
+  };
+
+  return (
+    <Form
+      initialValues={initialQuery}
+      onSubmit={(values) => {
+        console.log("filter values:", values);
+      }}
+    >
+      <p className="form-text">Search Contact</p>
+      <div className="row row-cols-1 row-cols-lg-3">
+        <TextInput name="name" label="Name" />
+        <TextInput name="email" label="Email" />
+        <TextInput name="cityProvince" label="City/Province" />
+      </div>
+    </Form>
   );
 }
