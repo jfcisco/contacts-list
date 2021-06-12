@@ -70,10 +70,19 @@ function ContactsFilter() {
       }}
     >
       <p className="form-text">Search Contact</p>
-      <div className="row row-cols-1 row-cols-lg-3">
-        <TextInput name="name" label="Name" />
-        <TextInput name="email" label="Email" />
-        <TextInput name="cityProvince" label="City/Province" />
+      <div className="row mb-4">
+        <div className="col-sm-6 col-lg-3 justify-content-end">
+          <TextInput name="name" label="Name" />
+        </div>
+        <div className="col-sm-6 col-lg-3">
+          <TextInput name="email" label="Email" />
+        </div>
+        <div className="col-sm-6 col-lg-4">
+          <TextInput name="cityProvince" label="City/Province" />
+        </div>
+        <div className="col">
+          <button type="submit" className="btn btn-outline-dark w-100">Search</button>
+        </div>
       </div>
     </Form>
   );
