@@ -6,7 +6,7 @@ type ContactsTableProps = {
   handleDelete: (c: Contact) => void;
 }
 
-export function ContactsTable({ contacts, setContactShown, handleDelete }: ContactsTableProps) {
+export default function ContactsTable({ contacts, setContactShown, handleDelete }: ContactsTableProps) {
   return (<div className="table-responsive">
     <table className="table table-hover">
       {/* Weird bug on Edge: Header bottom border disappears when hovering over first row */}
