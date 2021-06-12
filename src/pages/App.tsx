@@ -5,10 +5,10 @@ import useContacts from '../hooks/useContacts';
 
 export default function App(): JSX.Element {
   const { contacts, addContact, deleteContact, updateContact } = useContacts();
-  
+
   return (
-    <div className="container mt-2 mt-md-5">
-      <h1 className="text-muted">My Contacts</h1>
+    <div className="container-lg mt-2 mt-md-5">
+      <h1 className="text-muted mb-4">My Contacts</h1>
       <PageContextProvider>
         <Page showFor={Pages.CREATE}>
           <ContactCreate createContact={addContact} />
