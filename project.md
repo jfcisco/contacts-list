@@ -29,6 +29,8 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
     2. if the user says no, go back to the list.
     
 - [ ] Search through the list of contacts by name, email, city/province.
+    - [ ] Make UI for filter toolbar
+    - [ ] Add logic to filter the list of contacts
 
 - [ ] Must also be readable and usable if viewed on a mobile device.
 
