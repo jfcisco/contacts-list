@@ -2,10 +2,10 @@ import { useContext, useState } from 'react';
 import { PageContext, Pages } from '../contexts/PageContext';
 import { Contact, Gender } from '../types/Contact';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
-import { FormErrors, FormValues } from '../types/FormTypes';
-import { isNullOrWhitespace, isValidEmail } from './validations';
+import { FormValues } from '../types/FormTypes';
+import { validateContact } from '../shared/validations';
 
-interface CreateFormValues extends FormValues {
+export interface CreateFormValues extends FormValues {
   firstName: string,
   middleName: string,
   lastName: string,
@@ -17,61 +17,6 @@ interface CreateFormValues extends FormValues {
   companyName?: string,
   contactNumbers: string[],
   email: string
-}
-
-// Map CreateFormValues key to string, and make all optional
-interface CreateFormErrors extends FormErrors { }
-
-/** Forms a Contact from the given form values, or returns an error object if the contact cannot be parsed.
- * The error object contains the list of validation errors.
- */
-function validateContact(values: CreateFormValues): CreateFormErrors {
-  const errors: CreateFormErrors = {};
-
-  if (isNullOrWhitespace(values.firstName)) {
-    errors.firstName = "Please enter the contact's first name.";
-  }
-
-  if (isNullOrWhitespace(values.middleName)) {
-    errors.middleName = "Please enter the contact's middle name.";
-  }
-
-  if (isNullOrWhitespace(values.lastName)) {
-    errors.lastName = "Please enter the contact's last name.";
-  }
-
-  // Assumption: Browser validation will be used for the birthday field
-  if (isNullOrWhitespace(values.birthday)) {
-    errors.birthday = "Please enter a valid date for birthday.";
-  }
-
-  if (isNullOrWhitespace(values["address.addressLine"])) {
-    errors["address.addressLine"] = "Please enter an address line.";
-  }
-
-  if (isNullOrWhitespace(values["address.cityProvince"])) {
-    errors["address.cityProvince"] = "Please enter a city/province.";
-  }
-
-  if (isNullOrWhitespace(values["address.country"])) {
-    errors["address.country"] = "Please enter a country.";
-  }
-
-  if (isNullOrWhitespace(values.email)) {
-    errors.email = "Please enter an email address.";
-  }
-  else if (!isValidEmail(values.email)) {
-    errors.email = "Please enter a valid email address in the format (name@example.com).";
-  }
-
-  if (values.contactNumbers.length < 3) {
-    errors.contactNumbers = "Please enter at least three contact numbers";
-  }
-  else if (values.contactNumbers.some(number => isNullOrWhitespace(number))) {
-    errors.contactNumbers = "Please fill out or remove any empty rows.";
-  }
-
-  return errors;
 }
 
 type ContactCreateProps = {
@@ -107,7 +52,6 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
         validate={validateContact}
         onSubmit={(values) => {
           setIsSubmitting(true);
-          // TODO: Parse values to Contact type. Values are valid at this point.
           createContact({
             id: -1, // temporary ID to be replaced with a real one
             firstName: values.firstName,
