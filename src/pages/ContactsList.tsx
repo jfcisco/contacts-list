@@ -19,11 +19,11 @@ const contactMatchesQuery = (contact: Contact, query: ContactsSearchQuery) => {
     return false;
   }
 
-  if (query.email && !(contact.emailAddress.toLowerCase() === query.email)) {
+  if (query.email && !(contact.emailAddress.toLowerCase().includes(query.email.toLowerCase()))) {
     return false;
   }
 
-  if (query.cityProvince && !(contact.address.cityProvince.toLowerCase() === query.cityProvince)) {
+  if (query.cityProvince && !(contact.address.cityProvince.toLowerCase().includes(query.cityProvince.toLowerCase()))) {
     return false;
   }
     
