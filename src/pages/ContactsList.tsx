@@ -11,9 +11,30 @@ type ContactsListProps = {
   deleteContact: (contact: Contact) => {};
 }
 
+const contactMatchesQuery = (contact: Contact, query: ContactsSearchQuery) => {
+  const contactNames = [contact.firstName, contact.middleName, contact.lastName]
+  
+  // As soon as the contact is found not to match the query, return false;
+  if (query.name && !contactNames.some(name => name.toLowerCase().includes(query.name.toLowerCase()))) {
+    return false;
+  }
+
+  if (query.email && !(contact.emailAddress.toLowerCase() === query.email)) {
+    return false;
+  }
+
+  if (query.cityProvince && !(contact.address.cityProvince.toLowerCase() === query.cityProvince)) {
+    return false;
+  }
+    
+  return true;
+}
+
+
 export default function ContactsList({ contacts, deleteContact }: ContactsListProps): JSX.Element {
   const { setCurrentPage } = useContext(PageContext);
   const [contactShown, setContactShown] = useState<Contact | null>(null);
+  const [searchQuery, setSearchQuery] = useState<ContactsSearchQuery>({ name: '', email: '', cityProvince: ''});
 
   const handleDelete = (contact: Contact) => {
     const userConfirmed = window.confirm("Do you want to delete this contact? Click OK to confirm.");
@@ -23,7 +44,11 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
     }
   }
 
-  const listProps = { contacts, setContactShown, handleDelete };
+  const listProps = {
+    contacts: contacts.filter(c => contactMatchesQuery(c, searchQuery)),
+    setContactShown,
+    handleDelete
+  };
 
   return (
     <>
@@ -34,7 +59,7 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
       {/* Contact Modal */}
       {contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)} />}
 
-      <ContactsFilter />
+      <ContactsFilter onFilter={(query) => setSearchQuery(query)}/>
 
       {/* Display the data table when screen is large enough */}
       <div className="d-none d-md-block">
@@ -49,14 +74,18 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
   );
 }
 
-interface ContactsFilterValues {
+interface ContactsSearchQuery {
   name: string,
   email: string,
   cityProvince: string
 }
 
-function ContactsFilter() {
-  const initialQuery: ContactsFilterValues = {
+type ContactsFilterProps = {
+  onFilter: (q: ContactsSearchQuery) => void;
+}
+
+function ContactsFilter({ onFilter }: ContactsFilterProps) {
+  const initialQuery: ContactsSearchQuery = {
     name: '',
     email: '',
     cityProvince: ''
@@ -65,8 +94,12 @@ function ContactsFilter() {
   return (
     <Form
       initialValues={initialQuery}
-      onSubmit={(values) => {
-        console.log("filter values:", values);
+      onSubmit={values => {
+        onFilter({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          cityProvince: values.cityProvince.trim()
+        });
       }}
     >
       <p className="form-text">Search Contact</p>
