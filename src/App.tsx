@@ -1,5 +1,4 @@
-import ContactsList from './pages/ContactsList';
-import ContactCreate from './pages/ContactCreate';
+import { ContactCreate, ContactUpdate, ContactsList } from "./pages";
 import { Page, PageContextProvider, PagePortal } from './contexts/PageContext';
 import useContacts from './hooks/useContacts';
 
@@ -15,7 +14,7 @@ export default function App(): JSX.Element {
         </PagePortal>
 
         <PagePortal showFor={Page.UPDATE}>
-          {/* TODO: Create Update Contact form */}
+          <ContactUpdate />
         </PagePortal>
 
         <PagePortal showFor={Page.LIST}>
