@@ -1,6 +1,6 @@
 import ContactsList from './ContactsList';
 import ContactCreate from './ContactCreate';
-import { Pages, PageContextProvider, Page } from '../contexts/PageContext';
+import { Page, PageContextProvider, PagePortal } from '../contexts/PageContext';
 import useContacts from '../hooks/useContacts';
 
 export default function App(): JSX.Element {
@@ -9,18 +9,18 @@ export default function App(): JSX.Element {
   return (
     <div className="container-lg mt-2 mt-md-5">
       <h1 className="text-muted mb-4">My Contacts</h1>
-      <PageContextProvider>
-        <Page showFor={Pages.CREATE}>
+      <PageContextProvider initialPage={Page.LIST}>
+        <PagePortal showFor={Page.CREATE}>
           <ContactCreate createContact={addContact} />
-        </Page>
+        </PagePortal>
 
-        <Page showFor={Pages.UPDATE}>
+        <PagePortal showFor={Page.UPDATE}>
           {/* TODO: Create Update Contact form */}
-        </Page>
+        </PagePortal>
 
-        <Page showFor={Pages.LIST}>
+        <PagePortal showFor={Page.LIST}>
           <ContactsList contacts={contacts} deleteContact={deleteContact} />
-        </Page>
+        </PagePortal>
       </PageContextProvider>
     </div>
   );

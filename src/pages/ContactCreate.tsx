@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { PageContext, Pages } from '../contexts/PageContext';
+import { PageContext, Page } from '../contexts/PageContext';
 import { Contact, Gender } from '../types/Contact';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
 import { FormValues } from '../types/FormTypes';
@@ -42,7 +42,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
   };
 
   function goBack() {
-    setCurrentPage(Pages.LIST);
+    setCurrentPage(Page.LIST);
   }
 
   return (

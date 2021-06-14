@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Pages, PageContext } from '../contexts/PageContext';
+import { Page, PageContext } from '../contexts/PageContext';
 import { Contact } from '../types/Contact';
 import ContactView from '../components/ContactViewModal';
 import ContactsTable from '../components/ContactsTable';
@@ -54,7 +54,7 @@ export default function ContactsList({ contacts, deleteContact }: ContactsListPr
     <>
       <div className="row mb-4 px-4">
         <p className="col-md-9 d-none d-md-inline">Please click on a row to view the contact.</p>
-        <button className="btn btn-primary col-md-3" onClick={() => setCurrentPage(Pages.CREATE)}>Create Contact</button>
+        <button className="btn btn-primary col-md-3" onClick={() => setCurrentPage(Page.CREATE)}>Create Contact</button>
       </div>
       {/* Contact Modal */}
       {contactShown && <ContactView contact={contactShown} onHide={() => setContactShown(null)} />}
