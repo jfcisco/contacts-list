@@ -14,3 +14,5 @@ export type FormTouched<T extends string | number | symbol> = {
 export type FieldProps = {
   name: string;
 };
+
+export type FormInput = HTMLInputElement | HTMLSelectElement;

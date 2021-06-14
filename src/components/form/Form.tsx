@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { FormContextProvider } from '../../contexts/FormContext';
-import { FormInput } from '../../types/FormInput';
-import { FormValues, FormErrors, FormTouched } from '../../types/FormTypes';
+import { FormValues, FormErrors, FormTouched, FormInput } from '../../types/FormTypes';
 import './Form.css';
 
 type FormProps<T> = {

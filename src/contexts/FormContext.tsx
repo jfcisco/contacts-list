@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FormInput } from "../types/FormInput";
+import { FormInput } from "../types/FormTypes";
 
 type FormContextType<T> = {
   values: T;
