@@ -1,7 +1,7 @@
-import ContactsList from './ContactsList';
-import ContactCreate from './ContactCreate';
-import { Page, PageContextProvider, PagePortal } from '../contexts/PageContext';
-import useContacts from '../hooks/useContacts';
+import ContactsList from './pages/ContactsList';
+import ContactCreate from './pages/ContactCreate';
+import { Page, PageContextProvider, PagePortal } from './contexts/PageContext';
+import useContacts from './hooks/useContacts';
 
 export default function App(): JSX.Element {
   const { contacts, addContact, deleteContact, updateContact } = useContacts();
