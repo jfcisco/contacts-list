@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 /** Enumerates the pages of the application */
-export enum Pages {
+export enum Page {
   CREATE,
   LIST,
   UPDATE
 }
 
 type PageContextValue = {
-  currentPage: Pages;
-  setCurrentPage: (page: Pages) => void;
+  currentPage: Page;
+  setCurrentPage: (page: Page) => void;
 }
 
 /** Displays a Progress Bar stuck to the top of the viewport */
@@ -40,12 +40,17 @@ const ProgressBar = ({ progress }: { progress: number }) => {
 
 export const PageContext = React.createContext<PageContextValue>(null!);
 
-export function PageContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [currentPage, _setCurrentPage] = React.useState<Pages>(Pages.LIST);
+type PageContextProviderProps = {
+  initialPage: Page;
+  children: React.ReactNode;
+}
+
+export function PageContextProvider({ initialPage, children }: PageContextProviderProps): JSX.Element {
+  const [currentPage, _setCurrentPage] = React.useState<Page>(initialPage);
   const [progressState, setProgressState] = useState({ progress: 0, animate: "none" });
 
   const PAGE_LOAD_DELAY_TIME = 600;
-  function setCurrentPage(page: Pages) {
+  function setCurrentPage(page: Page) {
     setProgressState({ progress: 100, animate: "" })
     setTimeout(() => { _setCurrentPage(page); setProgressState({ progress: 0, animate: "none !important" }); }, PAGE_LOAD_DELAY_TIME);
   }
@@ -58,12 +63,12 @@ export function PageContextProvider({ children }: { children: React.ReactNode })
   )
 }
 
-type PageProps = {
-  showFor: Pages;
+type PagePortalProps = {
+  showFor: Page;
   children: React.ReactNode;
 }
 
-export function Page({ showFor, children }: PageProps): JSX.Element {
+export function PagePortal({ showFor, children }: PagePortalProps): JSX.Element {
   const pageContext = React.useContext(PageContext);
 
   return (
