@@ -1,4 +1,6 @@
 import { Contact, getAgeFromBirthday, getPrimaryContactNumber } from "../types/Contact";
+import { PageContext, Page } from "../contexts/PageContext";
+import { useContext } from "react";
 
 type ContactsCardsProps = {
   contacts: Contact[];
@@ -38,6 +40,8 @@ function ContactCard({ contact, setContactShown, handleDelete }: ContactCardProp
       contactNumbers
     } = contact;
 
+    const { setCurrentPage } = useContext(PageContext);
+
     const fullName = `${lastName}, ${firstName} ${middleName[0]}.`;
     const age = getAgeFromBirthday(birthday);
     const primaryContact = getPrimaryContactNumber(contactNumbers);
@@ -66,7 +70,7 @@ function ContactCard({ contact, setContactShown, handleDelete }: ContactCardProp
               onClick={() => setContactShown(contact)} >View</button>
             <button
               className="btn btn-secondary"
-              onClick={() => handleDelete(contact)}>Update</button>
+              onClick={() => setCurrentPage(Page.UPDATE, contact)}>Update</button>
             <button
               className="btn btn-danger"
               onClick={() => handleDelete(contact)}>Delete</button>

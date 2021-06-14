@@ -1,4 +1,6 @@
 import { Contact, getAgeFromBirthday, getPrimaryContactNumber } from "../types/Contact";
+import { Page, PageContext } from "../contexts/PageContext";
+import { useContext } from "react";
 
 type ContactsTableProps = {
   contacts: Contact[];
@@ -7,7 +9,8 @@ type ContactsTableProps = {
 }
 
 export default function ContactsTable({ contacts, setContactShown, handleDelete }: ContactsTableProps) {
-  return (<div className="table-responsive">
+  return (
+  <div className="table-responsive">
     <table className="table table-hover">
       {/* Weird bug on Edge: Header bottom border disappears when hovering over first row */}
       <thead>
@@ -54,6 +57,8 @@ function ContactsListRow({ contact, onView, onDelete }: ContactsListRowProps): J
     contactNumbers
   } = contact;
 
+  const { setCurrentPage } = useContext(PageContext);
+
   const fullName = `${lastName}, ${firstName} ${middleName[0]}.`;
   const age = getAgeFromBirthday(birthday);
   const primaryContact = getPrimaryContactNumber(contactNumbers);
@@ -66,8 +71,7 @@ function ContactsListRow({ contact, onView, onDelete }: ContactsListRowProps): J
       <td>{emailAddress}</td>
       <td>{primaryContact}</td>
       <td>
-        {/* TODO: Implement Update Contact */}
-        <button className="btn btn-secondary me-2" onClick={(e) => { e.stopPropagation() }}>Update</button>
+        <button className="btn btn-secondary me-2" onClick={(e) => { e.stopPropagation(); setCurrentPage(Page.UPDATE, contact) }}>Update</button>
         <button className="btn btn-danger" onClick={(e) => { e.stopPropagation(); onDelete() }}>Delete</button>
       </td>
     </tr>
