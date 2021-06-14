@@ -14,7 +14,7 @@ export default function App(): JSX.Element {
         </PagePortal>
 
         <PagePortal showFor={Page.UPDATE}>
-          <ContactUpdate />
+            <ContactUpdate updateContact={updateContact} />
         </PagePortal>
 
         <PagePortal showFor={Page.LIST}>
