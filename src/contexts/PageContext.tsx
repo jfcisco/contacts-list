@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { Contact } from '../types/Contact';
 
 /** Enumerates the pages of the application */
 export enum Page {
@@ -10,7 +11,8 @@ export enum Page {
 
 type PageContextValue = {
   currentPage: Page;
-  setCurrentPage: (page: Page) => void;
+  setCurrentPage: (page: Page, payload?: Contact) => void;
+  payload?: Contact;
 }
 
 /** Displays a Progress Bar stuck to the top of the viewport */
@@ -47,16 +49,23 @@ type PageContextProviderProps = {
 
 export function PageContextProvider({ initialPage, children }: PageContextProviderProps): JSX.Element {
   const [currentPage, _setCurrentPage] = React.useState<Page>(initialPage);
-  const [progressState, setProgressState] = useState({ progress: 0, animate: "none" });
+  const [progressState, setProgressState] = useState({ progress: 0, animate: "none" }); // HACK: Progress bar is meh code, best to take out before presenting
+  const [payload, setPayload] = useState<Contact | undefined>()
 
   const PAGE_LOAD_DELAY_TIME = 600;
-  function setCurrentPage(page: Page) {
-    setProgressState({ progress: 100, animate: "" })
-    setTimeout(() => { _setCurrentPage(page); setProgressState({ progress: 0, animate: "none !important" }); }, PAGE_LOAD_DELAY_TIME);
+  // Payload can be used to simulate how a contact can be specified when changing pages
+  // e.g. /contact/1, etc.
+  function setCurrentPage(page: Page, payload?: Contact) {
+    setProgressState({ progress: 100, animate: "" });
+    payload && setPayload(payload);
+    setTimeout(() => { 
+      _setCurrentPage(page); 
+      setProgressState({ progress: 0, animate: "none !important" }); 
+    }, PAGE_LOAD_DELAY_TIME);
   }
 
   return (
-    <PageContext.Provider value={{ currentPage, setCurrentPage }}>
+    <PageContext.Provider value={{ currentPage, setCurrentPage, payload }}>
       <ProgressBar progress={progressState.progress} />
       { children}
     </PageContext.Provider>
