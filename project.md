@@ -24,9 +24,9 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
 - [X] Delete a contact. When delete button is pressed, there should be a confirmation “Do you want to delete this contact?”.
     1. If the user says yes, proceed to delete the selected contact,
     2. if the user says no, go back to the list.
-- [ ] Search through the list of contacts by name, email, city/province.
-    - [ ] Make UI for filter toolbar
-    - [ ] Add logic to filter the list of contacts
+- [X] Search through the list of contacts by name, email, city/province.
+    - [X] Make UI for filter toolbar
+    - [X] Add logic to filter the list of contacts
 - [ ] Must also be readable and usable if viewed on a mobile device.
 - [ ] Bonus: (with extra credit)
     1. Create a log-in page, and display the current user logged in.
