@@ -8,7 +8,7 @@ import { Form, TextInput } from '../components/form';
 
 type ContactsListProps = {
   contacts: Contact[];
-  deleteContact: (contact: Contact) => {};
+  deleteContact: (contact: Contact) => void;
 }
 
 const contactMatchesQuery = (contact: Contact, query: ContactsSearchQuery) => {
@@ -84,6 +84,7 @@ type ContactsFilterProps = {
   onFilter: (q: ContactsSearchQuery) => void;
 }
 
+// TODO: Refactor as a separate component
 function ContactsFilter({ onFilter }: ContactsFilterProps) {
   const initialQuery: ContactsSearchQuery = {
     name: '',
