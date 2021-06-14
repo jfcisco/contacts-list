@@ -15,25 +15,19 @@ Create a contact list webpage mockup with CRUD functions. User should be able to
         - g. Email address*
         - h. Contact number* (should have the option to save at least 3 contact numbers, one should be marked as primary)
         - i. Company name
-
 - [X] See a list of contact forms, having columns for Name (Last name, First name, Middle initial), Age, City/Province, Email and Contact number (primary).
     1. When a particular contact is selected for viewing, all of its detail is displayed in a modal.
     - [X] Address is formatted correctly.
     - [X] Primary contact number is indicated correctly.
-
 - [ ] Update a particular contact and save its changes.
     1. The required fields should still apply.
-
 - [X] Delete a contact. When delete button is pressed, there should be a confirmation “Do you want to delete this contact?”.
     1. If the user says yes, proceed to delete the selected contact,
     2. if the user says no, go back to the list.
-    
 - [ ] Search through the list of contacts by name, email, city/province.
     - [ ] Make UI for filter toolbar
     - [ ] Add logic to filter the list of contacts
-
 - [ ] Must also be readable and usable if viewed on a mobile device.
-
 - [ ] Bonus: (with extra credit)
     1. Create a log-in page, and display the current user logged in.
     2. Validations should be applied.
