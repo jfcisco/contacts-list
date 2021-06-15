@@ -3,6 +3,7 @@ import { Page, PageContext } from "../contexts/PageContext";
 import { useContext, useState } from "react";
 import { BirthdayInput, ContactNumbersInput, Form, GenderSelect, TextInput } from "../components/form";
 import { FormValues } from "../types/FormTypes";
+import { validateContact } from "../shared/validations";
 
 type ContactUpdateProps = {
   updateContact: (c: Contact) => void;
@@ -60,6 +61,7 @@ export default function ContactUpdate({ updateContact }: ContactUpdateProps) {
     <div>
       <Form
         initialValues={initialValues}
+        validate={validateContact}
         onSubmit={(values) => {
           console.log(values); // TODO: add update handler
         }}
