@@ -3,13 +3,24 @@ import { useFormContext } from "../../contexts/FormContext";
 import { setPrimaryContactNumber } from "../../shared/contactFunctions";
 import { FormValues, FieldProps } from "../../types/FormTypes";
 
+type ContactNumbersInputProps = {
+  initialValue?: string[];
+} & FieldProps
+
 /** Custom input to get a list of contact numbers from a user  */
-export function ContactNumbersInput({ name }: FieldProps) {
+export function ContactNumbersInput({ name, initialValue }: ContactNumbersInputProps) {
   const { setFormValues, touched, errors, handleBlur  } = useFormContext<FormValues>();
   const [localValues, setLocalValues] = React.useState<string[]>([]);
   const isInvalid = touched[name] && errors[name];
 
+  // Set initial value upon component mount if there is one 
   React.useEffect(() => {
+    if (initialValue) setLocalValues(initialValue);
+  }, [initialValue, setLocalValues]);
+
+  // Record  changes in local state in the state of the FormContext
+  React.useEffect(() => {
+    // TODO: Maybe there's a way to eliminate the need for a local state?
     setFormValues(values => ({ ...values, [name]: localValues }));
   }, [localValues, name, setFormValues]);
 
