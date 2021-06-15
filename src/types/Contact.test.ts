@@ -1,4 +1,4 @@
-import { getAgeFromBirthday, getPrimaryContactNumber, setPrimaryContactNumber } from './Contact';
+import { getAgeFromBirthday, getPrimaryContactNumber, setPrimaryContactNumber } from "../shared/contactFunctions";
 
 test('Can get primary contact number', () => {
   const contactNumbers = ["0", "1", "2"];

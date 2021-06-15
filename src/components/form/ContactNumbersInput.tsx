@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormContext } from "../../contexts/FormContext";
-import { setPrimaryContactNumber } from "../../types/Contact";
+import { setPrimaryContactNumber } from "../../shared/contactFunctions";
 import { FormValues, FieldProps } from "../../types/FormTypes";
 
 /** Custom input to get a list of contact numbers from a user  */

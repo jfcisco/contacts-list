@@ -1,4 +1,5 @@
-import { Contact, getAgeFromBirthday, getPrimaryContactNumber } from "../types/Contact";
+import { Contact } from "../types/Contact";
+import { getAgeFromBirthday, getPrimaryContactNumber } from "../shared/contactFunctions";
 import { Page, PageContext } from "../contexts/PageContext";
 import { useContext } from "react";
 
