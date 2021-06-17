@@ -12,7 +12,7 @@ export const isNullOrWhitespace = (value: string | null | undefined): boolean =>
 
 export const isValidEmail = (value: string) => {
   // Format pattern is based  https://en.wikipedia.org/wiki/Email_address#Syntax
-  const validEmailFormat = /^([a-z]|[A-Z]|\d|\.(?!\.)|[!#$%&'*+-/=?^_`{|}~]){0,64}@([a-z]|[A-Z]|\d|-|\.){1,63}$/;
+  const validEmailFormat = /^([a-z]|[A-Z]|\d|\.(?!\.)|[!#$%&'*+-/=?^_`{|}~]){1,64}@([a-z]|[A-Z]|\d|-|\.){1,63}$/;
   return validEmailFormat.test(value);
 };
 
