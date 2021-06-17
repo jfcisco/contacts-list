@@ -36,3 +36,14 @@ export function getAgeFromBirthday(birthday: Date): Number {
   const msInAYear = 31556952000;
   return Math.floor(ageInMs / msInAYear);
 }
+
+/** Helper method to turn Date object into an ISO-format date string (i.e. yyyy-MM-dd)
+ * for setting date input value
+ */
+ export function formatAsISODate(date: Date) {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`;
+}
