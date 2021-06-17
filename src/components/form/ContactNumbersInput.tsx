@@ -53,8 +53,12 @@ export function ContactNumbersInput({ name, initialValue }: ContactNumbersInputP
         localValues.map((number, i) => {
           return (
             <div key={i} className="input-group mt-2 mb-1">
-              { i === 0 && <span className="input-group-text">Primary Contact</span> }
-            {/* Trying this one out: https://technology.blog.gov.uk/2020/02/24/why-the-gov-uk-design-system-team-changed-the-input-type-for-numbers/ */}
+              {i === 0 &&
+                <span className="input-group-text fw-bold">
+                  Primary
+                </span>}
+              
+              {/* Trying this one out: https://technology.blog.gov.uk/2020/02/24/why-the-gov-uk-design-system-team-changed-the-input-type-for-numbers/ */}
               <input
                 className={`form-control ${isInvalid ? "is-invalid" : ""}`}
                 type="text"
@@ -66,10 +70,19 @@ export function ContactNumbersInput({ name, initialValue }: ContactNumbersInputP
                 onBlur={handleBlur}
               />
               {
-                i !== 0 && <button type="button" className="btn btn-secondary" onClick={() => handleSetPrimaryNumber(i)}>Set as Primary Contact</button>
+                i !== 0 &&
+                <button type="button"
+                  className="btn btn-outline-primary lh-1"
+                  onClick={() => handleSetPrimaryNumber(i)}>
+                  Set Primary
+                </button>
               }
 
-              <button type="button" className="btn btn-danger" onClick={() => handleRemove(i)}>Remove</button>
+              <button type="button"
+                className="btn btn-danger"
+                onClick={() => handleRemove(i)}>
+                Remove
+              </button>
             </div>
           )
         })
