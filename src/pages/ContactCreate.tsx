@@ -4,6 +4,7 @@ import { Contact, Gender } from '../types/Contact';
 import { TextInput, BirthdayInput, GenderSelect, ContactNumbersInput, Form } from '../components/form';
 import { FormValues } from '../types/FormTypes';
 import { validateContact } from '../shared/validations';
+import { parseIsoDateString } from '../shared/contactFunctions';
 
 export interface CreateFormValues extends FormValues {
   firstName: string,
@@ -56,7 +57,7 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
             firstName: values.firstName,
             middleName: values.middleName,
             lastName: values.lastName,
-            birthday: new Date(values.birthday),
+            birthday: parseIsoDateString(values.birthday),
             gender: values.gender ? values.gender : undefined,
             address: {
               addressLine: values["address.addressLine"],

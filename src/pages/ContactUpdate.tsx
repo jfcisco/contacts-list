@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { BirthdayInput, ContactNumbersInput, Form, GenderSelect, TextInput } from "../components/form";
 import { FormValues } from "../types/FormTypes";
 import { validateContact } from "../shared/validations";
-import { formatAsISODate } from "../shared/contactFunctions";
+import { formatAsISODate, parseIsoDateString } from "../shared/contactFunctions";
 
 type ContactUpdateProps = {
   updateContact: (c: Contact) => Promise<Contact>;
@@ -60,7 +60,7 @@ export default function ContactUpdate({ updateContact }: ContactUpdateProps) {
             firstName: values.firstName,
             middleName: values.middleName,
             lastName: values.lastName,
-            birthday: new Date(values.birthday),
+            birthday: parseIsoDateString(values.birthday),
             address: {
               addressLine: values["address.addressLine"],
               cityProvince: values["address.cityProvince"],
