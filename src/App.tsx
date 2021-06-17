@@ -1,9 +1,9 @@
 import { ContactCreate, ContactUpdate, ContactsList } from "./pages";
 import { Page, PageContextProvider, PagePortal } from './contexts/PageContext';
-import useContacts from './hooks/useContacts';
+import { useContactsDelay } from './hooks/useContacts';
 
 export default function App(): JSX.Element {
-  const { contacts, addContact, deleteContact, updateContact } = useContacts();
+  const { contacts, addContact, deleteContact, updateContact } = useContactsDelay();
 
   return (
     <div className="container-lg mt-2 mt-md-5">

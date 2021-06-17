@@ -6,7 +6,7 @@ const DELAY_TIME = 700;
 const delay = () => new Promise((resolve) => setTimeout(resolve, DELAY_TIME));
 
 /** Custom hook for data operations. Simulates a backend that is asynchronous for CRUD contacts */ 
-export default function useContactsDelay() {
+export function useContactsDelay() {
   const [contacts, setContacts] = useState<Contact[]>([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function useContactsDelay() {
   }
 
   /** Adds a contact to the list of contacts */
-  async function addContact(newContact: Contact) {
+  async function createContact(newContact: Contact) {
     const oldContacts = [...contacts];
     setContacts(contacts => [newContact, ...contacts]);
     
@@ -62,6 +62,5 @@ export default function useContactsDelay() {
     }
   }
 
-  // Using const assertion for custom hook: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/hooks/#custom-hooks
-  return { contacts, addContact, updateContact, deleteContact };
+  return { contacts, addContact: createContact, updateContact, deleteContact };
 }
