@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/form/Form.css"],"names":[],"mappings":"AAAA,sBACE,WAAY,CACZ,SACF","file":"main.a2798f8e.chunk.css","sourcesContent":[".required-input::after {\n  content: \"*\";\n  color: red;\n}"]}
