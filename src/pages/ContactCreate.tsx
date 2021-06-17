@@ -20,7 +20,7 @@ export interface CreateFormValues extends FormValues {
 }
 
 type ContactCreateProps = {
-  createContact: (contact: Contact) => Promise<Contact>;
+  createContact: (contact: Omit<Contact, "id">) => Promise<Contact>;
 }
 
 /** Form to create a contact record */
@@ -53,7 +53,6 @@ export default function ContactCreate({ createContact }: ContactCreateProps) {
         onSubmit={(values) => {
           setIsSubmitting(true);
           createContact({
-            id: -1, // temporary ID to be replaced with a real one
             firstName: values.firstName,
             middleName: values.middleName,
             lastName: values.lastName,

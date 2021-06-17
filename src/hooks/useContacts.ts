@@ -18,9 +18,23 @@ export function useContactsDelay() {
   }
 
   /** Adds a contact to the list of contacts */
-  async function createContact(newContact: Contact) {
+  async function createContact(newContact: Omit<Contact, "id">) {
     const oldContacts = [...contacts];
-    setContacts(contacts => [newContact, ...contacts]);
+    
+    // Get the id to be assigned to the newly created contact, as highest id in contacts plus 1
+    const newId = contacts.reduce<number>((maybeMax, contact) => {
+      if (maybeMax >= contact.id) {
+        return maybeMax;
+      }
+      else {
+        return contact.id;
+      }
+    }, 0) + 1;
+
+    // Complete the contact to be added (i.e., set its ID value)
+    const contactToBeAdded = { ...newContact, id: newId };
+
+    setContacts(contacts => [contactToBeAdded, ...contacts]);
     
     try {
       await delay();
@@ -29,7 +43,7 @@ export function useContactsDelay() {
       setContacts(oldContacts); // rollback
     }
 
-    return newContact;
+    return contactToBeAdded;
   }
 
   /** Updates an existing contact */
