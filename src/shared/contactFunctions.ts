@@ -43,7 +43,38 @@ export function getAgeFromBirthday(birthday: Date): Number {
  export function formatAsISODate(date: Date) {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
+  const year = date.getFullYear().toString().padStart(4, '0');
 
   return `${year}-${month}-${day}`;
+}
+
+/** Parses an ISO-format date string (i.e., yyyy-MM-dd) into a Date object.
+ * Useful for handling form values.
+ * @throws Error when given ISO date is invalid 
+ */
+export function parseIsoDateString(isoDate: string): Date {
+  const isoDateByParts = isoDate.split('-');
+  if (isoDateByParts.length !== 3) throw new Error(`${isoDate} is not a valid ISO date string.`);
+
+  const year = strictParseInt(isoDateByParts[0]);
+  const month = strictParseInt(isoDateByParts[1]);
+  const day = strictParseInt(isoDateByParts[2]);
+  
+  if (isNaN(year) || isNaN(month) || isNaN(day)) throw new Error(`${isoDate} is not a valid ISO date string.`);
+
+  const resultingDate = new Date(year, month - 1, day);
+  resultingDate.setFullYear(year); // Takes care of the case that  year is within [0, 99].
+  return resultingDate;
+}
+
+
+/** Stricter parseInt function. Shamelessly copied from 
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt#a_stricter_parse_function
+ */
+function strictParseInt(intString: string): number {
+  if (/^[-+]?(\d+|Infinity)$/.test(intString)) {
+    return Number(intString);
+  } else {
+    return NaN;
+  }
 }
