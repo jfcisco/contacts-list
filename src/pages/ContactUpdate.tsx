@@ -4,13 +4,14 @@ import { useContext, useState } from "react";
 import { BirthdayInput, ContactNumbersInput, Form, GenderSelect, TextInput } from "../components/form";
 import { FormValues } from "../types/FormTypes";
 import { validateContact } from "../shared/validations";
+import { formatAsISODate } from "../shared/contactFunctions";
 
 type ContactUpdateProps = {
-  updateContact: (c: Contact) => void;
+  updateContact: (c: Contact) => Promise<Contact>;
 }
 
 export interface UpdateContactFormValues extends FormValues {
-  id: string,
+  id: number,
   firstName: string,
   middleName: string,
   lastName: string,
@@ -24,17 +25,6 @@ export interface UpdateContactFormValues extends FormValues {
   email: string
 }
 
-/** Helper method to turn Date object into an ISO-format date string (i.e. yyyy-MM-dd)
- * for setting date input value 
- */
-function formatAsISODate(date: Date) {
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-
-  return `${year}-${month}-${day}`;
-}
-
 /** Form to update an existing contact */
 export default function ContactUpdate({ updateContact }: ContactUpdateProps) {
   const { payload: contact, setCurrentPage } = useContext(PageContext);
@@ -43,7 +33,7 @@ export default function ContactUpdate({ updateContact }: ContactUpdateProps) {
   if (!contact) return <ContactUpdateErrorMessage />;
 
   const initialValues: UpdateContactFormValues = {
-    id: contact.id.toString(),
+    id: contact.id,
     firstName: contact.firstName,
     middleName: contact.middleName,
     lastName: contact.lastName,
@@ -63,7 +53,33 @@ export default function ContactUpdate({ updateContact }: ContactUpdateProps) {
         initialValues={initialValues}
         validate={validateContact}
         onSubmit={(values) => {
-          console.log(values); // TODO: add update handler
+          setIsSubmitting(true);
+          // Make Contact from contact form values
+          const updatedContact: Contact = {
+            id: values.id,
+            firstName: values.firstName,
+            middleName: values.middleName,
+            lastName: values.lastName,
+            birthday: new Date(values.birthday),
+            address: {
+              addressLine: values["address.addressLine"],
+              cityProvince: values["address.cityProvince"],
+              country: values["address.country"]
+            },
+            companyName: values.companyName,
+            emailAddress: values.email,
+            contactNumbers: values.contactNumbers
+          }
+          
+          updateContact(updatedContact)
+            .then(contact => {
+              setCurrentPage(Page.LIST);
+              console.log("Updated contact with id: ", contact.id);
+            })
+            .catch(err => {
+              console.error("Error occured! ", err); // TODO: Replace with appropriate logger
+              setIsSubmitting(false);
+            });
         }}
       >
         <h2>Update a Contact</h2>
