@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+# Contacts List
+
+[Click here to open the app](https://jfcisco.github.io/contacts-list)
+
+An application for the web application exercise for my self-paced developer training.
+
+This is a website mockup of an application that allows a user to create, view, update, and delete contacts. The specifications followed for this app can be found in the `project.md` file of this repository.
+
+The application can retain data items in memory while using the application, however, data is not preserved after refreshing or navigating away from the page.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
