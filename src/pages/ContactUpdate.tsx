@@ -61,6 +61,7 @@ export default function ContactUpdate({ updateContact }: ContactUpdateProps) {
             middleName: values.middleName,
             lastName: values.lastName,
             birthday: parseIsoDateString(values.birthday),
+            gender: values.gender ? values.gender : undefined,
             address: {
               addressLine: values["address.addressLine"],
               cityProvince: values["address.cityProvince"],
